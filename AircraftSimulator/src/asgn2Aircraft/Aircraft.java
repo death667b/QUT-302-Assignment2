@@ -170,7 +170,7 @@ public abstract class Aircraft {
 	 * 
 	 * @return <code>int</code> number of Economy Class passengers 
 	 */
-	public int getNumEonomy() {
+	public int getNumEconomy() {
 		
 	}
 
@@ -285,11 +285,8 @@ public abstract class Aircraft {
 	 * then Premium, upgrading to fill spaces already available and those created 
 	 * by upgrades to First), and then finally, we do the same for Economy, upgrading 
 	 * where possible to Premium.  
-	 * 
-	 * @throws PassengerException if <code>Passenger</code> is in incorrect state 
-	 * See {@link asgn2Passengers.Passenger#upgrade()}
 	 */
-	public void upgradeBookings() throws PassengerException { 
+	public void upgradeBookings() { 
 		
 	}
 
