@@ -65,7 +65,28 @@ public abstract class Aircraft {
 	 * @throws AircraftException if isNull(flightCode) OR (departureTime <=0) OR ({first,business,premium,economy} <0)
 	 */
 	public Aircraft(String flightCode,int departureTime, int first, int business, int premium, int economy) throws AircraftException {
-		//Lots here 
+		
+		if (flightCode != null && flightCode.trim().length() > 0) this.flightCode = flightCode;
+		else throw new AircraftException("Flight code can not be blank.");
+		
+		if (departureTime > 0) this.departureTime = departureTime;
+		else throw new AircraftException("Departure time needs greater than zero.");
+		
+		if (first >= 0) this.firstCapacity = first;
+		else throw new AircraftException("Capacity of First Class must be greater than 0.");
+		
+		if (business >= 0) this.businessCapacity  = business;
+		else throw new AircraftException("Capacity of Business Class must be greater than 0.");
+		
+		if (premium >= 0) this.premiumCapacity = premium;
+		else throw new AircraftException("Capacity of Premium Class must be greater than 0.");
+		
+		if (economy >= 0) this.economyCapacity = economy;
+		else throw new AircraftException("Capacity of Economy Class must be greater than 0.");
+		
+		this.capacity = this.firstCapacity + this.businessCapacity + 
+				this.premiumCapacity + this.economyCapacity;
+		
 		this.status = "";
 	}
 	

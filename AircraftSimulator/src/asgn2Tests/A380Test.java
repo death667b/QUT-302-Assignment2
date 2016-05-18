@@ -9,19 +9,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 import asgn2Aircraft.A380;
-import asgn2Aircraft.Aircraft;
+import asgn2Aircraft.AircraftException;
 
 /**
  * @author user
  *
  */
 public class A380Test {
-
+	
+	private A380 aircraftA380, aircraftErrors;
+	
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws AircraftException {
+		aircraftA380 = new A380("stringFlightCode", 123);
 	}
 
 	/**
@@ -32,13 +36,7 @@ public class A380Test {
 		fail("Not yet implemented"); // TODO
 	}
 	
-    @Test
-    public void testAircraft() throws AircraftException {
-        aircraft = new A380("string", 123);
 
-        assertNotNull(aircraft);
-    }
-	
 
 	/**
 	 * Test method for {@link asgn2Aircraft.A380#A380(java.lang.String, int, int, int, int, int)}.
@@ -51,11 +49,51 @@ public class A380Test {
 	/**
 	 * Test method for {@link asgn2Aircraft.Aircraft#Aircraft(java.lang.String, int, int, int, int, int)}.
 	 */
+    @Test
+    public void testAircraftBasicNotNull()  {
+        assertNotNull(aircraftA380);
+    }
+    
 	@Test
-	public void testAircraft2() {
-		fail("Not yet implemented"); // TODO
+	public void testAircraftGetFlightCode() {
+		assertEquals("A380:stringFlightCode:123 Capacity: 484 [F: 14 J: 64 P: 35 Y: 371]", aircraftA380.initialState());
 	}
 
+	@Test(expected = AircraftException.class)
+	public void testAircraftBlankFlightCodeExpectFail() throws AircraftException {
+		aircraftErrors = new A380(" ", 123);
+	}
+	
+	@Test(expected = AircraftException.class)
+	public void testAircraftNullFlightCodeExpectFail() throws AircraftException {
+		aircraftErrors = new A380(null, 123);
+	}
+	
+	@Test(expected = AircraftException.class)
+	public void testAircraftZeroDepartTimeExpectFail() throws AircraftException {
+		aircraftErrors = new A380("123", 0);
+	}
+	
+	@Test(expected = AircraftException.class)
+	public void testAircraftNegitiveFirstClassExpectFail() throws AircraftException {
+		aircraftErrors = new A380("123", 123, -1, 123, 123, 123);
+	}
+	
+	@Test(expected = AircraftException.class)
+	public void testAircraftNegitiveBusinessClassExpectFail() throws AircraftException {
+		aircraftErrors = new A380("123", 123, 123, -1, 123, 123);
+	}
+	
+	@Test(expected = AircraftException.class)
+	public void testAircraftNegitivePremClassExpectFail() throws AircraftException {
+		aircraftErrors = new A380("123", 123, 123, 123, -1, 123);
+	}
+	
+	@Test(expected = AircraftException.class)
+	public void testAircraftNegitiveEconClassExpectFail() throws AircraftException {
+		aircraftErrors = new A380("123", 123, 123, 123, 123, -1);
+	}
+	
 	/**
 	 * Test method for {@link asgn2Aircraft.Aircraft#cancelBooking(asgn2Passengers.Passenger, int)}.
 	 */
