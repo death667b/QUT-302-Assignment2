@@ -104,6 +104,8 @@ public abstract class Aircraft {
 		//Stuff here
 		this.status += Log.setPassengerMsg(p,"C","N");
 		//Stuff here
+		
+		//TODO
 	}
 
 	/**
@@ -120,6 +122,8 @@ public abstract class Aircraft {
 		//Stuff here
 		this.status += Log.setPassengerMsg(p,"N/Q","C");
 		//Stuff here
+		
+		//TODO
 	}
 	
 	/**
@@ -141,7 +145,8 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if aircraft empty; false otherwise 
 	 */
 	public boolean flightEmpty() {
-		
+		if (numFirst + numBusiness + numPremium + numEconomy == 0) return true;
+		else return false;
 	}
 	
 	/**
@@ -150,7 +155,8 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if aircraft full; false otherwise 
 	 */
 	public boolean flightFull() {
-		
+		if (numFirst + numBusiness + numPremium + numEconomy == capacity) return true;
+		else return false;
 	}
 	
 	/**
@@ -163,7 +169,7 @@ public abstract class Aircraft {
 	 * See {@link asgn2Passengers.Passenger#flyPassenger(int)}. 
 	 */
 	public void flyPassengers(int departureTime) throws PassengerException { 
-		
+		//TODO
 	}
 	
 	/**
@@ -173,7 +179,9 @@ public abstract class Aircraft {
 	 * @return <code>Bookings</code> object containing the status.  
 	 */
 	public Bookings getBookings() {
+		//TODO
 		
+		return null;
 	}
 	
 	/**
@@ -182,7 +190,7 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of Business Class passengers 
 	 */
 	public int getNumBusiness() {
-		
+		return numBusiness;
 	}
 	
 	
@@ -192,7 +200,7 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of Economy Class passengers 
 	 */
 	public int getNumEconomy() {
-		
+		return numEconomy;
 	}
 
 	/**
@@ -201,7 +209,7 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of First Class passengers 
 	 */
 	public int getNumFirst() {
-		
+		return numFirst;
 	}
 
 	/**
@@ -210,7 +218,7 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of Confirmed passengers 
 	 */
 	public int getNumPassengers() {
-		
+		return numFirst + numBusiness + numPremium + numEconomy;
 	}
 	
 	/**
@@ -219,7 +227,7 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of Premium Economy Class passengers
 	 */
 	public int getNumPremium() {
-		
+		return numPremium;
 	}
 	
 	/**
@@ -229,7 +237,9 @@ public abstract class Aircraft {
 	 * @return <code>List<Passenger></code> object containing the passengers.  
 	 */
 	public List<Passenger> getPassengers() {
+		return null;
 		
+		//TODO
 	}
 	
 	/**
@@ -255,7 +265,9 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if isConfirmed(p); false otherwise 
 	 */
 	public boolean hasPassenger(Passenger p) {
+		return false;
 		
+		//TODO
 	}
 	
 
@@ -280,7 +292,9 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if seats in Class(p); false otherwise
 	 */
 	public boolean seatsAvailable(Passenger p) {		
+		return false;
 		
+		//TODO
 	}
 
 	/* 
@@ -308,7 +322,7 @@ public abstract class Aircraft {
 	 * where possible to Premium.  
 	 */
 	public void upgradeBookings() { 
-		
+		//TODO
 	}
 
 	/**
