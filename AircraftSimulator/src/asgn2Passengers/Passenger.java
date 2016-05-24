@@ -90,7 +90,7 @@ public abstract class Passenger {
 		this.passID = "" + Passenger.index; 
 		Passenger.index++; 
 		
-		
+		newState = true;
 		//Stuff here 
 	}
 	
@@ -98,7 +98,7 @@ public abstract class Passenger {
 	 * Simple no-argument constructor to support {@link #upgrade()}
 	 */
 	protected Passenger() {
-
+		//TODO
 	}
 	
 	/**
