@@ -38,6 +38,8 @@ public class Business extends Passenger {
 
 	@Override
 	public Passenger upgrade() {
-	
+		return null;
+		
+		//TODO
 	}
 }

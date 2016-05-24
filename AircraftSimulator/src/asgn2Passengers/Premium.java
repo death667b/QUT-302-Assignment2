@@ -33,7 +33,9 @@ public class Premium extends Passenger {
 
 	@Override
 	public Passenger upgrade() {
+		return null;
 		
+		//TODO
 	}
 	
 	@Override
