@@ -103,7 +103,7 @@ public abstract class Passenger {
 	 *         isFlown(this) OR (cancellationTime < 0) OR (departureTime < cancellationTime)
 	 */
 	public void cancelSeat(int cancellationTime) throws PassengerException {
-
+		//TODO
 	}
 
 	/**
@@ -123,7 +123,7 @@ public abstract class Passenger {
 	 * 		   OR (confirmationTime < 0) OR (departureTime < confirmationTime)
 	 */
 	public void confirmSeat(int confirmationTime, int departureTime) throws PassengerException {
-	
+	//TODO
 	}
 
 	/**
@@ -139,7 +139,7 @@ public abstract class Passenger {
 	 *         isFlown(this) OR (departureTime <= 0)
 	 */
 	public void flyPassenger(int departureTime) throws PassengerException {
-		
+		//TODO
 	}
 
 	/**
@@ -148,7 +148,9 @@ public abstract class Passenger {
 	 * @return the bookingTime
 	 */
 	public int getBookingTime() {
+		return 0;
 		
+		//TODO
 	}
 
 	/**
@@ -158,7 +160,9 @@ public abstract class Passenger {
 	 * @return the confirmationTime
 	 */
 	public int getConfirmationTime() {
+		return 0;
 		
+		//TODO
 	}
 
 	/**
@@ -167,7 +171,9 @@ public abstract class Passenger {
 	 * @return the departureTime
 	 */
 	public int getDepartureTime() {
+		return 0;
 		
+		//TODO
 	}
 	
 	/**
@@ -176,7 +182,9 @@ public abstract class Passenger {
 	 * @return the enterQueueTime
 	 */
 	public int getEnterQueueTime() {
+		return 0;
 		
+		//TODO
 	}
 
 	/**
@@ -185,7 +193,9 @@ public abstract class Passenger {
 	 * @return the exitQueueTime
 	 */
 	public int getExitQueueTime() {
+		return 0;
 		
+		//TODO
 	}
 
 	/**
@@ -194,7 +204,9 @@ public abstract class Passenger {
 	 * @return the passID
 	 */
 	public String getPassID() {
+		return null;
 		
+		//TODO
 	}
 
 	/**
@@ -203,7 +215,9 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if Confirmed state; false otherwise 
 	 */
 	public boolean isConfirmed() {
+		return false;
 		
+		//TODO
 	}
 		
 	/**
@@ -212,7 +226,9 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if Flown state; false otherwise 
 	 */
 	public boolean isFlown() {
+		return false;
 		
+		//TODO
 	}
 	
 	/**
@@ -221,7 +237,9 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if New state; false otherwise 
 	 */
 	public boolean isNew() {
+		return false;
 		
+		//TODO
 	}
 
 	/**
@@ -230,7 +248,9 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if Queued state; false otherwise 
 	 */
 	public boolean isQueued() {
+		return false;
 		
+		//TODO
 	}
 	
 	/**
@@ -239,7 +259,9 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if Refused state; false otherwise 
 	 */
 	public boolean isRefused() {
+		return false;
 		
+		//TODO
 	}
 	
 	/**
@@ -267,7 +289,7 @@ public abstract class Passenger {
 	 *         isFlown(this) OR (queueTime < 0) OR (departureTime < queueTime)
 	 */
 	public void queuePassenger(int queueTime, int departureTime) throws PassengerException {
-		
+		//TODO
 	}
 	
 	/**
@@ -285,7 +307,7 @@ public abstract class Passenger {
 	 * 			OR (refusalTime < 0) OR (refusalTime < bookingTime)
 	 */
 	public void refusePassenger(int refusalTime) throws PassengerException {
-		
+		//TODO
 	}
 	
 	/* (non-Javadoc) (Supplied) 
@@ -327,7 +349,9 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Confirmed state; false otherwise
 	 */
 	public boolean wasConfirmed() {
+		return false;
 		
+		//TODO
 	}
 
 	/**
@@ -336,7 +360,9 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Queued state; false otherwise
 	 */
 	public boolean wasQueued() {
+		return false;
 		
+		//TODO
 	}
 	
 	/**
@@ -345,7 +371,7 @@ public abstract class Passenger {
 	 * @param <code>Passenger</code> state to transfer
 	 */
 	protected void copyPassengerState(Passenger p) {
-		
+		//TODO
 	}
 	
 	//Various private helper methods to check arguments and throw exceptions
