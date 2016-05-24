@@ -148,9 +148,7 @@ public abstract class Passenger {
 	 * @return the bookingTime
 	 */
 	public int getBookingTime() {
-		return 0;
-		
-		//TODO
+		return bookingTime;
 	}
 
 	/**
@@ -160,9 +158,7 @@ public abstract class Passenger {
 	 * @return the confirmationTime
 	 */
 	public int getConfirmationTime() {
-		return 0;
-		
-		//TODO
+		return confirmationTime;
 	}
 
 	/**
@@ -171,9 +167,7 @@ public abstract class Passenger {
 	 * @return the departureTime
 	 */
 	public int getDepartureTime() {
-		return 0;
-		
-		//TODO
+		return departureTime;
 	}
 	
 	/**
@@ -182,9 +176,7 @@ public abstract class Passenger {
 	 * @return the enterQueueTime
 	 */
 	public int getEnterQueueTime() {
-		return 0;
-		
-		//TODO
+		return enterQueueTime;
 	}
 
 	/**
@@ -193,9 +185,7 @@ public abstract class Passenger {
 	 * @return the exitQueueTime
 	 */
 	public int getExitQueueTime() {
-		return 0;
-		
-		//TODO
+		return exitQueueTime;
 	}
 
 	/**
@@ -204,9 +194,7 @@ public abstract class Passenger {
 	 * @return the passID
 	 */
 	public String getPassID() {
-		return null;
-		
-		//TODO
+		return passID;
 	}
 
 	/**
@@ -215,9 +203,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if Confirmed state; false otherwise 
 	 */
 	public boolean isConfirmed() {
-		return false;
-		
-		//TODO
+		return confirmed;
 	}
 		
 	/**
@@ -226,9 +212,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if Flown state; false otherwise 
 	 */
 	public boolean isFlown() {
-		return false;
-		
-		//TODO
+		return flown;
 	}
 	
 	/**
@@ -237,9 +221,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if New state; false otherwise 
 	 */
 	public boolean isNew() {
-		return false;
-		
-		//TODO
+		return newState;
 	}
 
 	/**
@@ -248,9 +230,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if Queued state; false otherwise 
 	 */
 	public boolean isQueued() {
-		return false;
-		
-		//TODO
+		return inQueue;
 	}
 	
 	/**
@@ -259,9 +239,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if Refused state; false otherwise 
 	 */
 	public boolean isRefused() {
-		return false;
-		
-		//TODO
+		return refused;
 	}
 	
 	/**
