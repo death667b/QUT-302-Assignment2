@@ -72,9 +72,25 @@ public abstract class Passenger {
 	 * OR (departureTime < bookingTime) 
 	 */
 	public Passenger(int bookingTime, int departureTime) throws PassengerException  {
-		//Stuff here 
+		if (bookingTime >= 0){
+			if (departureTime > 0){
+				if (departureTime >= bookingTime){
+					this.bookingTime = bookingTime;
+					this.departureTime = departureTime;
+				} else {
+					throw new PassengerException("Departure time can not be before booking time.");
+				}
+			} else {
+				throw new PassengerException("Departure time must be greater than zero.");
+			}
+		} else {
+			throw new PassengerException("Booking time needs to be greater than or equal to zero.");
+		}
+
 		this.passID = "" + Passenger.index; 
 		Passenger.index++; 
+		
+		
 		//Stuff here 
 	}
 	
