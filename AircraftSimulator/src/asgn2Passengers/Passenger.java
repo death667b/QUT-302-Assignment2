@@ -98,8 +98,7 @@ public abstract class Passenger {
 	/**
 	 * Simple no-argument constructor to support {@link #upgrade()}
 	 */
-	protected Passenger() {
-		//TODO
+	protected Passenger() {	
 		
 	}
 	
@@ -404,8 +403,17 @@ public abstract class Passenger {
 	 * @param <code>Passenger</code> state to transfer
 	 */
 	protected void copyPassengerState(Passenger p) {
-		//TODO
+		this.bookingTime = p.bookingTime;
+		this.confirmationTime = p.confirmationTime;
+		this.confirmed = p.confirmed;
+		this.departureTime = p.departureTime;
+		this.enterQueueTime = p.enterQueueTime;
+		this.exitQueueTime = p.enterQueueTime;
+		this.wasConfirmed = p.wasConfirmed;
+		this.wasQueued = p.wasQueued;
 		
+		String[] splitString = p.passID.split(":");
+		this.passID = "F:" + splitString[1];
 	}
 	
 	//Various private helper methods to check arguments and throw exceptions

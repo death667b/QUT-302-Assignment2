@@ -52,6 +52,7 @@ public abstract class Aircraft {
 	protected int departureTime; 
 	protected String status;
 	protected List<Passenger> seats;
+	protected Bookings booking;
 
 	/**
 	 * Constructor sets flight info and the basic size parameters. 
@@ -90,6 +91,9 @@ public abstract class Aircraft {
 		this.status = "";
 		
 		seats = new ArrayList<Passenger>(); 
+		
+		
+		booking = new Bookings(this.numFirst, this.numBusiness, this.numPremium, this.numEconomy, getNumPassengers(), getAvailableSeats());
 	}
 	
 	/**
@@ -232,7 +236,7 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of Confirmed passengers 
 	 */
 	public int getNumPassengers() {
-		return numFirst + numBusiness + numPremium + numEconomy;
+		return this.numFirst + this.numBusiness + this.numPremium + this.numEconomy;
 	}
 	
 	/**
@@ -352,9 +356,57 @@ public abstract class Aircraft {
 	 * where possible to Premium.  
 	 */
 	public void upgradeBookings() { 
-		//TODO
+		List<Passenger> passengerList = getPassengers();
 		
+		if (this.numFirst < this.firstCapacity){
+			for (Passenger oldP : passengerList) {
+				 if (oldP instanceof Business){
+					 Passenger newP = oldP.upgrade();
+					 this.seats.remove(oldP);
+					 this.seats.add(newP);
+					 this.numBusiness--;
+					 this.numFirst++;
+				 }
+				 
+				 if (this.numFirst >= this.firstCapacity){
+					 break;
+				 }
+			}
+		}
+		
+		if (this.numBusiness < this.businessCapacity){
+			for (Passenger oldP : passengerList) {
+				 if (oldP instanceof Premium){
+					 Passenger newP = oldP.upgrade();
+					 this.seats.remove(oldP);
+					 this.seats.add(newP);
+					 this.numPremium--;
+					 this.numBusiness++;
+				 }
+				 
+				 if (this.numBusiness >= this.businessCapacity){
+					 break;
+				 }
+			}
+		}
+		
+		if (this.numPremium < this.premiumCapacity){
+			for (Passenger oldP : passengerList) {
+				 if (oldP instanceof Economy){
+					 Passenger newP = oldP.upgrade();
+					 this.seats.remove(oldP);
+					 this.seats.add(newP);
+					 this.numEconomy--;
+					 this.numPremium++;
+				 }
+				 
+				 if (this.numPremium >= this.premiumCapacity){
+					 break;
+				 }
+			}
+		}
 	}
+	
 
 	/**
 	 * Simple String method for the Aircraft ID 
@@ -397,5 +449,14 @@ public abstract class Aircraft {
 		} else {
 			this.numEconomy = addPassenger ? this.numEconomy + 1 : this.numEconomy - 1;
 		}
+	}
+	
+	/**
+	 * Simple method to return available seats on the Aircraft
+	 * 
+	 * @return int Available seats
+	 */
+	private int getAvailableSeats() {
+		return this.capacity - getNumPassengers();
 	}
 }
