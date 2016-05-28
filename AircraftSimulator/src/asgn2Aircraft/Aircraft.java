@@ -125,7 +125,8 @@ public abstract class Aircraft {
 	 */
 	public void confirmBooking(Passenger p,int confirmationTime) throws AircraftException, PassengerException { 		
 		if (this.departureTime <= 0) throw new PassengerException("Departure time needs to be greater than zero.");
-		if (confirmationTime < 0) throw new PassengerException("Confirmation time needs to be equal to or greater than zero.");		
+		if (confirmationTime < 0) throw new PassengerException("Confirmation time needs to be equal to or greater than zero.");
+		if (!seatsAvailable(p)) throw new AircraftException(noSeatsAvailableMsg(p));
 		if (p.isNew() || p.isQueued()) {
 			
 			p.confirmSeat(confirmationTime, this.departureTime);
@@ -137,6 +138,8 @@ public abstract class Aircraft {
 		} else {
 			throw new PassengerException("Passenger is in the incorrect state. It needs to be either New or Queued.");
 		}
+		
+		//TODO  noSeatsAvailableMsg(p);  split
 	}
 	
 	/**
@@ -307,10 +310,9 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if seats in Class(p); false otherwise
 	 */
 	public boolean seatsAvailable(Passenger p) {	
-		String passID = p.getPassID();
-		String[] splitString = passID.split(":");
+		String fareCode = getFareClass(p);
 		
-		switch (splitString[0]) {
+		switch (fareCode) {
 			case "F": 
 				if (numFirst < firstCapacity) return true;
 				else return false;
@@ -455,5 +457,16 @@ public abstract class Aircraft {
 	 */
 	private int getAvailableSeats() {
 		return this.capacity - getNumPassengers();
+	}
+	
+	/**
+	 * Get the fare class code for a given passenger
+	 * 
+	 * @param p Passenger object to get the fare code
+	 * @return String of the fare code
+	 */
+	private String getFareClass(Passenger p) {
+		String[] splitString = p.getPassID().split(":");
+		return splitString[0];
 	}
 }
