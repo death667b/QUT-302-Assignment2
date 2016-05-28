@@ -310,23 +310,18 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if seats in Class(p); false otherwise
 	 */
 	public boolean seatsAvailable(Passenger p) {	
-		String[] fareCode = p.getPassID().split(":");
-		
-		switch (fareCode[0]) {
-			case "F": 
-				if (numFirst < firstCapacity) return true;
-				else return false;
-			case "J":
-				if (numBusiness < businessCapacity) return true;
-				else return false;
-			case "P":
-				if (numPremium < premiumCapacity) return true;
-				else return false;
-			case "Y":
-				if (numEconomy < economyCapacity) return true;
-				else return false;
-			default:
-				return false;		
+		if (p instanceof First) {
+			if (numFirst < firstCapacity) return true;
+			else return false;
+		} else if (p instanceof Business) {
+			if (numBusiness < businessCapacity) return true;
+			else return false;
+		} else if (p instanceof Premium) {
+			if (numPremium < premiumCapacity) return true;
+			else return false;
+		} else {
+			if (numEconomy < economyCapacity) return true;
+			else return false;
 		}
 	}
 
