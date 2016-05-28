@@ -176,8 +176,12 @@ public abstract class Passenger {
 	 *         isFlown(this) OR (departureTime <= 0)
 	 */
 	public void flyPassenger(int departureTime) throws PassengerException {
-		//TODO
+		if (!isConfirmed()) throw new PassengerException("Passenger is not in the correct state. Passenger is not confirmed before flying.");
+		if (departureTime < 0) throw new PassengerException("Departure time can not be less than zero.");
 		
+		this.confirmed = false;
+		this.flown = true;
+		this.departureTime = departureTime;
 	}
 
 	/**

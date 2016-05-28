@@ -138,8 +138,6 @@ public abstract class Aircraft {
 		} else {
 			throw new PassengerException("Passenger is in the incorrect state. It needs to be either New or Queued.");
 		}
-		
-		//TODO  noSeatsAvailableMsg(p);  split
 	}
 	
 	/**
@@ -185,8 +183,10 @@ public abstract class Aircraft {
 	 * See {@link asgn2Passengers.Passenger#flyPassenger(int)}. 
 	 */
 	public void flyPassengers(int departureTime) throws PassengerException { 
-		//TODO
-		
+		for(Passenger p : this.seats){
+			if (!p.isConfirmed()) throw new PassengerException("Passenger is in the incorrect state.  It is not confirmed.");
+			p.flyPassenger(departureTime);
+		}
 	}
 	
 	/**
@@ -310,9 +310,9 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if seats in Class(p); false otherwise
 	 */
 	public boolean seatsAvailable(Passenger p) {	
-		String fareCode = getFareClass(p);
+		String[] fareCode = p.getPassID().split(":");
 		
-		switch (fareCode) {
+		switch (fareCode[0]) {
 			case "F": 
 				if (numFirst < firstCapacity) return true;
 				else return false;
@@ -457,16 +457,5 @@ public abstract class Aircraft {
 	 */
 	private int getAvailableSeats() {
 		return this.capacity - getNumPassengers();
-	}
-	
-	/**
-	 * Get the fare class code for a given passenger
-	 * 
-	 * @param p Passenger object to get the fare code
-	 * @return String of the fare code
-	 */
-	private String getFareClass(Passenger p) {
-		String[] splitString = p.getPassID().split(":");
-		return splitString[0];
 	}
 }
