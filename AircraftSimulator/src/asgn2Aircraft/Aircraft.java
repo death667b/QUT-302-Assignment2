@@ -103,6 +103,11 @@ public abstract class Aircraft {
 	 * @throws AircraftException if <code>Passenger</code> is not recorded in aircraft seating 
 	 */
 	public void cancelBooking(Passenger p,int cancellationTime) throws PassengerException, AircraftException {
+		if (!p.isConfirmed()) throw new PassengerException("Passenger needs to be confirmed on the plane before it can be cancelled.");
+		if (cancellationTime < 0) throw new PassengerException("Cancellation time can not be less than zero.");
+		if (!hasPassenger(p)) throw new AircraftException("Passenger needs to exist on the plane to be cancelled.");
+		
+		
 		//Stuff here
 		this.status += Log.setPassengerMsg(p,"C","N");
 		//Stuff here
@@ -122,7 +127,7 @@ public abstract class Aircraft {
 	 */
 	public void confirmBooking(Passenger p,int confirmationTime) throws AircraftException, PassengerException { 		
 		if (this.departureTime <= 0) throw new PassengerException("Departure time needs to be greater than zero.");
-		if (confirmationTime < 0)    throw new PassengerException("Confirmation time needs to be equal to or greater than zero.");		
+		if (confirmationTime < 0) throw new PassengerException("Confirmation time needs to be equal to or greater than zero.");		
 		if (p.isNew() || p.isQueued()) {
 			
 			p.confirmSeat(confirmationTime, this.departureTime);
@@ -248,9 +253,7 @@ public abstract class Aircraft {
 	 * @return <code>List<Passenger></code> object containing the passengers.  
 	 */
 	public List<Passenger> getPassengers() {
-		return null;
-		
-		//TODO
+		return seats;
 	}
 	
 	/**
@@ -276,9 +279,7 @@ public abstract class Aircraft {
 	 * @return <code>boolean</code> true if isConfirmed(p); false otherwise 
 	 */
 	public boolean hasPassenger(Passenger p) {
-		return false;
-		
-		//TODO
+		return this.seats.contains(p);
 	}
 	
 
