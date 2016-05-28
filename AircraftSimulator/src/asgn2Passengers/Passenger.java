@@ -91,7 +91,6 @@ public abstract class Passenger {
 		Passenger.index++; 
 		
 		newState = true;
-		//Stuff here 
 	}
 	
 	/**
@@ -296,7 +295,15 @@ public abstract class Passenger {
 	 *         isFlown(this) OR (queueTime < 0) OR (departureTime < queueTime)
 	 */
 	public void queuePassenger(int queueTime, int departureTime) throws PassengerException {
-		//TODO
+		if (queueTime < 0) throw new PassengerException("Queue time must be zero or greater.");
+		if (departureTime < queueTime) throw new PassengerException("Departure can not happen before queue time.");
+		if (isQueued() || isConfirmed() || isRefused() || isFlown()) 
+			throw new PassengerException("Passenger is in the wrong state.");
+		
+		this.newState = false;
+		this.inQueue = true;
+		this.enterQueueTime = queueTime;
+		this.departureTime = departureTime;
 	}
 	
 	/**
