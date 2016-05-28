@@ -75,7 +75,7 @@ public abstract class Aircraft {
 		if (first >= 0) this.firstCapacity = first;
 		else throw new AircraftException("Capacity of First Class must be greater than 0.");
 		
-		if (business >= 0) this.businessCapacity  = business;
+		if (business >= 0) this.businessCapacity = business;
 		else throw new AircraftException("Capacity of Business Class must be greater than 0.");
 		
 		if (premium >= 0) this.premiumCapacity = premium;
@@ -236,7 +236,8 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of Confirmed passengers 
 	 */
 	public int getNumPassengers() {
-		return this.numFirst + this.numBusiness + this.numPremium + this.numEconomy;
+		int sumPassengers = this.numFirst + this.numBusiness + this.numPremium + this.numEconomy;
+		return sumPassengers;
 	}
 	
 	/**
@@ -451,6 +452,7 @@ public abstract class Aircraft {
 	 * @return int Available seats
 	 */
 	private int getAvailableSeats() {
-		return this.capacity - getNumPassengers();
+		int availSeats = this.capacity - getNumPassengers();
+		return availSeats;
 	}
 }
