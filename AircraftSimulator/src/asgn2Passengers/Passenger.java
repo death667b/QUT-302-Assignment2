@@ -100,6 +100,7 @@ public abstract class Passenger {
 	 */
 	protected Passenger() {
 		//TODO
+		
 	}
 	
 	/**
@@ -121,6 +122,7 @@ public abstract class Passenger {
 	 */
 	public void cancelSeat(int cancellationTime) throws PassengerException {
 		//TODO
+		
 	}
 
 	/**
@@ -171,6 +173,7 @@ public abstract class Passenger {
 	 */
 	public void flyPassenger(int departureTime) throws PassengerException {
 		//TODO
+		
 	}
 
 	/**
@@ -397,6 +400,7 @@ public abstract class Passenger {
 	 */
 	protected void copyPassengerState(Passenger p) {
 		//TODO
+		
 	}
 	
 	//Various private helper methods to check arguments and throw exceptions

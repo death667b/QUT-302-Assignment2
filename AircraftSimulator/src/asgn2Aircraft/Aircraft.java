@@ -180,6 +180,7 @@ public abstract class Aircraft {
 	 */
 	public void flyPassengers(int departureTime) throws PassengerException { 
 		//TODO
+		
 	}
 	
 	/**
@@ -349,6 +350,7 @@ public abstract class Aircraft {
 	 */
 	public void upgradeBookings() { 
 		//TODO
+		
 	}
 
 	/**
