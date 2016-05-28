@@ -121,8 +121,13 @@ public abstract class Passenger {
 	 *         isFlown(this) OR (cancellationTime < 0) OR (departureTime < cancellationTime)
 	 */
 	public void cancelSeat(int cancellationTime) throws PassengerException {
-		//TODO
+		if (isNew() || isQueued() || isRefused() || isFlown()) throw new PassengerException("Passenger is in the wrong state.");
+		if (cancellationTime < 0) throw new PassengerException("Cancellation time can not be less than zero.");
+		if (this.departureTime < cancellationTime) throw new PassengerException("Departure time can not be less than cancellation time.");
 		
+		this.confirmed = false;
+		this.newState = true;
+		this.bookingTime = cancellationTime;
 	}
 
 	/**
