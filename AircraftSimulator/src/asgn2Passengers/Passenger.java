@@ -325,7 +325,18 @@ public abstract class Passenger {
 	 * 			OR (refusalTime < 0) OR (refusalTime < bookingTime)
 	 */
 	public void refusePassenger(int refusalTime) throws PassengerException {
-		//TODO
+		if (refusalTime < 0) throw new PassengerException("Refusal time must be zero or greater.");
+		if (refusalTime < this.bookingTime) throw new PassengerException("Refusal time must happen after booking time.");
+		if (isConfirmed() || isRefused() ||  isFlown()) throw new PassengerException("Passenger is in the wrong state.");
+		
+		if (isNew()){
+			this.newState = false;
+		} else {
+			this.inQueue = false;
+			this.exitQueueTime = refusalTime;
+		}
+		
+		this.refused = true;
 	}
 	
 	/* (non-Javadoc) (Supplied) 
