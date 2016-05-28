@@ -118,12 +118,20 @@ public abstract class Aircraft {
 	 * OR confirmationTime OR departureTime is invalid. See {@link asgn2Passengers.Passenger#confirmSeat(int, int)}
 	 * @throws AircraftException if no seats available in <code>Passenger</code> fare class. 
 	 */
-	public void confirmBooking(Passenger p,int confirmationTime) throws AircraftException, PassengerException { 
-		//Stuff here
-		this.status += Log.setPassengerMsg(p,"N/Q","C");
-		//Stuff here
-		
-		//TODO
+	public void confirmBooking(Passenger p,int confirmationTime) throws AircraftException, PassengerException { 		
+		if (this.departureTime <= 0) throw new PassengerException("Departure time needs to be greater than zero.");
+		if (confirmationTime < 0)    throw new PassengerException("Confirmation time needs to be equal to or greater than zero.");		
+		if (p.isNew() || p.isQueued()) {
+			
+			p.confirmSeat(confirmationTime, this.departureTime);
+			incrementAircraftSeatingCount(p);
+			this.seats.add(p);
+			String currentState = p.isNew() ? "N" : "Q";
+			this.status += Log.setPassengerMsg(p,currentState,"C");
+			
+		} else {
+			throw new PassengerException("Passenger is in the incorrect state. It needs to be either New or Queued.");
+		}
 	}
 	
 	/**
@@ -365,5 +373,22 @@ public abstract class Aircraft {
 	private String noSeatsAvailableMsg(Passenger p) {
 		String msg = "";
 		return msg + p.noSeatsMsg(); 
+	}
+	
+	/**
+	 * Determine the type of Passenger and this increment that class of seat 
+	 * 
+	 * @param p Passenger object
+	 */
+	private void incrementAircraftSeatingCount(Passenger p) {
+		if (p instanceof First) {
+			this.numFirst++;
+		} else if (p instanceof Business) {
+			this.numBusiness++;
+		} else if (p instanceof Premium) {
+			this.numPremium++;
+		} else {
+			this.numEconomy++;
+		}
 	}
 }
