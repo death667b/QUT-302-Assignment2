@@ -305,7 +305,7 @@ public abstract class Passenger {
 		
 		this.newState = false;
 		this.inQueue = true;
-		this.wasConfirmed = true;
+		this.wasQueued = true;
 		this.enterQueueTime = queueTime;
 		this.departureTime = departureTime;
 	}
