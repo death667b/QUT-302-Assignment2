@@ -107,13 +107,10 @@ public abstract class Aircraft {
 		if (cancellationTime < 0) throw new PassengerException("Cancellation time can not be less than zero.");
 		if (!hasPassenger(p)) throw new AircraftException("Passenger needs to exist on the plane to be cancelled.");
 		
-		
-		//Stuff here
-		changeAircraftSeatingCount(p, false);
+		p.cancelSeat(cancellationTime);
 		this.status += Log.setPassengerMsg(p,"C","N");
-		//Stuff here
-		
-		//TODO
+		changeAircraftSeatingCount(p, false);
+		this.seats.remove(p);
 	}
 
 	/**
