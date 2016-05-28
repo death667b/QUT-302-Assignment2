@@ -52,7 +52,6 @@ public abstract class Aircraft {
 	protected int departureTime; 
 	protected String status;
 	protected List<Passenger> seats;
-	protected Bookings booking;
 
 	/**
 	 * Constructor sets flight info and the basic size parameters. 
@@ -91,9 +90,6 @@ public abstract class Aircraft {
 		this.status = "";
 		
 		seats = new ArrayList<Passenger>(); 
-		
-		
-		booking = new Bookings(this.numFirst, this.numBusiness, this.numPremium, this.numEconomy, getNumPassengers(), getAvailableSeats());
 	}
 	
 	/**
@@ -197,9 +193,10 @@ public abstract class Aircraft {
 	 * @return <code>Bookings</code> object containing the status.  
 	 */
 	public Bookings getBookings() {
-		//TODO
-		
-		return null;
+		Bookings booking = new Bookings(
+				this.numFirst, this.numBusiness, this.numPremium, this.numEconomy, getNumPassengers(), getAvailableSeats());
+
+		return booking;
 	}
 	
 	/**
@@ -443,7 +440,7 @@ public abstract class Aircraft {
 		if (p instanceof First) {
 			this.numFirst = addPassenger ? this.numFirst + 1 : this.numFirst - 1;
 		} else if (p instanceof Business) {
-			this.numBusiness = addPassenger ? this.numBusiness + 1 : this.numBusiness - 1;
+			this.numBusiness = addPassenger ? this.numBusiness + 1 : this.numBusiness - 1;	
 		} else if (p instanceof Premium) {
 			this.numPremium = addPassenger ? this.numPremium + 1 : this.numPremium - 1;
 		} else {
