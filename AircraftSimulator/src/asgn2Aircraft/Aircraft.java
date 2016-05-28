@@ -88,6 +88,8 @@ public abstract class Aircraft {
 				this.premiumCapacity + this.economyCapacity;
 		
 		this.status = "";
+		
+		seats = new ArrayList<Passenger>();
 	}
 	
 	/**
