@@ -109,6 +109,7 @@ public abstract class Aircraft {
 		
 		
 		//Stuff here
+		changeAircraftSeatingCount(p, false);
 		this.status += Log.setPassengerMsg(p,"C","N");
 		//Stuff here
 		
@@ -131,7 +132,7 @@ public abstract class Aircraft {
 		if (p.isNew() || p.isQueued()) {
 			
 			p.confirmSeat(confirmationTime, this.departureTime);
-			incrementAircraftSeatingCount(p);
+			changeAircraftSeatingCount(p, true);
 			this.seats.add(p);
 			String currentState = p.isNew() ? "N" : "Q";
 			this.status += Log.setPassengerMsg(p,currentState,"C");
@@ -385,15 +386,15 @@ public abstract class Aircraft {
 	 * 
 	 * @param p Passenger object
 	 */
-	private void incrementAircraftSeatingCount(Passenger p) {
+	private void changeAircraftSeatingCount(Passenger p, boolean addPassenger) {
 		if (p instanceof First) {
-			this.numFirst++;
+			this.numFirst = addPassenger ? this.numFirst + 1 : this.numFirst - 1;
 		} else if (p instanceof Business) {
-			this.numBusiness++;
+			this.numBusiness = addPassenger ? this.numBusiness + 1 : this.numBusiness - 1;
 		} else if (p instanceof Premium) {
-			this.numPremium++;
+			this.numPremium = addPassenger ? this.numPremium + 1 : this.numPremium - 1;
 		} else {
-			this.numEconomy++;
+			this.numEconomy = addPassenger ? this.numEconomy + 1 : this.numEconomy - 1;
 		}
 	}
 }
