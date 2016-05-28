@@ -89,7 +89,7 @@ public abstract class Aircraft {
 		
 		this.status = "";
 		
-		seats = new ArrayList<Passenger>();
+		seats = new ArrayList<Passenger>(); 
 	}
 	
 	/**
@@ -251,7 +251,11 @@ public abstract class Aircraft {
 	 * @return <code>List<Passenger></code> object containing the passengers.  
 	 */
 	public List<Passenger> getPassengers() {
-		return seats;
+		List<Passenger> seatsCopy = new ArrayList<Passenger>();
+
+		seatsCopy.addAll(seats);
+		
+		return seatsCopy;
 	}
 	
 	/**

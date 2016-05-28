@@ -147,8 +147,8 @@ public abstract class Passenger {
 	 * 		   OR (confirmationTime < 0) OR (departureTime < confirmationTime)
 	 */
 	public void confirmSeat(int confirmationTime, int departureTime) throws PassengerException {
-		if (departureTime < confirmationTime)          throw new PassengerException("Confirmation time can not happen after departure time.");
-		if (confirmationTime < 0)                      throw new PassengerException("Confirmation time needs to be zero or greater.");
+		if (departureTime < confirmationTime) throw new PassengerException("Confirmation time can not happen after departure time.");
+		if (confirmationTime < 0) throw new PassengerException("Confirmation time needs to be zero or greater.");
 		if (isConfirmed() || isRefused() || isFlown()) throw new PassengerException("Passenger is in the wrong state.");
 			
 		if (this.isQueued()) { 
