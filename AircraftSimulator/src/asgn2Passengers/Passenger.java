@@ -54,6 +54,8 @@ public abstract class Passenger {
 	protected boolean inQueue;
 	protected boolean flown;
 	protected boolean refused;
+	protected boolean wasQueued;
+	protected boolean wasConfirmed;
 	protected int bookingTime;
 	protected int enterQueueTime;
 	protected int exitQueueTime;
@@ -152,6 +154,7 @@ public abstract class Passenger {
 		this.confirmationTime = confirmationTime;
 		this.departureTime = departureTime;
 		this.confirmed = true;
+		this.wasConfirmed = true;
 	}
 
 	/**
@@ -302,6 +305,7 @@ public abstract class Passenger {
 		
 		this.newState = false;
 		this.inQueue = true;
+		this.wasConfirmed = true;
 		this.enterQueueTime = queueTime;
 		this.departureTime = departureTime;
 	}
@@ -363,9 +367,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Confirmed state; false otherwise
 	 */
 	public boolean wasConfirmed() {
-		return false;
-		
-		//TODO
+		return this.wasConfirmed;
 	}
 
 	/**
@@ -374,9 +376,7 @@ public abstract class Passenger {
 	 * @return <code>boolean</code> true if was Queued state; false otherwise
 	 */
 	public boolean wasQueued() {
-		return false;
-		
-		//TODO
+		return this.wasQueued;
 	}
 	
 	/**
