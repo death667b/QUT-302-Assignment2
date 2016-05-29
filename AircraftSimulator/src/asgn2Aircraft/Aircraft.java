@@ -105,7 +105,7 @@ public abstract class Aircraft {
 	public void cancelBooking(Passenger p,int cancellationTime) throws PassengerException, AircraftException {
 		if (!p.isConfirmed()) throw new PassengerException("Passenger needs to be confirmed on the plane before it can be cancelled.");
 		if (cancellationTime < 0) throw new PassengerException("Cancellation time can not be less than zero.");
-		if (!hasPassenger(p)) throw new AircraftException("Passenger needs to exist on the plane to be cancelled.");
+		if (!hasPassenger(p)) throw new AircraftException("Passenger needs to exist on the plane before it can be cancelled.");
 		
 		p.cancelSeat(cancellationTime);
 		this.status += Log.setPassengerMsg(p,"C","N");
@@ -184,7 +184,7 @@ public abstract class Aircraft {
 	 */
 	public void flyPassengers(int departureTime) throws PassengerException { 
 		for(Passenger p : this.seats){
-			if (!p.isConfirmed()) throw new PassengerException("Passenger is in the incorrect state.  It is not confirmed.");
+			if (!p.isConfirmed()) throw new PassengerException("Passenger is in the incorrect state. Must be confirmed before the passenger can fly.");
 			p.flyPassenger(departureTime);
 			this.status += Log.setPassengerMsg(p,"C","F");
 		}
@@ -197,10 +197,10 @@ public abstract class Aircraft {
 	 * @return <code>Bookings</code> object containing the status.  
 	 */
 	public Bookings getBookings() {
-		int availSeats = this.capacity - getNumPassengers();
+		int availableSeats = this.capacity - getNumPassengers();
 		
 		Bookings booking = new Bookings(
-				this.numFirst, this.numBusiness, this.numPremium, this.numEconomy, getNumPassengers() , availSeats);
+				this.numFirst, this.numBusiness, this.numPremium, this.numEconomy, getNumPassengers() , availableSeats);
 
 		return booking;
 	}
@@ -315,17 +315,15 @@ public abstract class Aircraft {
 	public boolean seatsAvailable(Passenger p) {	
 		if (p instanceof First) {
 			if (numFirst < firstCapacity) return true;
-			else return false;
 		} else if (p instanceof Business) {
 			if (numBusiness < businessCapacity) return true;
-			else return false;
 		} else if (p instanceof Premium) {
 			if (numPremium < premiumCapacity) return true;
-			else return false;
-		} else {
+		} else  if (p instanceof Economy){
 			if (numEconomy < economyCapacity) return true;
-			else return false;
 		}
+		
+		return false;
 	}
 
 	/* 
@@ -354,6 +352,12 @@ public abstract class Aircraft {
 	 */
 	public void upgradeBookings() { 
 		List<Passenger> passengerList = getPassengers();
+		
+		/*
+		 * 1. Test if there is space to upgrade
+		 * 2. Filter the type of passenger and upgrade if true
+		 * 3. Re-test for space after each upgrade, break if full.
+		 */	
 		
 		if (this.numFirst < this.firstCapacity){
 			for (Passenger oldP : passengerList) {

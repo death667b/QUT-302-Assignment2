@@ -28,7 +28,7 @@ public class Premium extends Passenger {
 	 * Simple constructor to support {@link asgn2Passengers.Passenger#upgrade()} in other subclasses
 	 */
 	protected Premium() {
-		
+		super();
 	}
 
 	@Override
