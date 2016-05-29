@@ -40,6 +40,9 @@ public class Business extends Passenger {
 	public Passenger upgrade() {
 		Passenger upgradedPassenger = new First();
 		upgradedPassenger.copyPassengerState(this);
+		
+		String[] splitString = this.passID.split(":");
+		upgradedPassenger.passID = "F:" + splitString[1];
 
 		return upgradedPassenger;
 	}

@@ -33,6 +33,9 @@ public class Economy extends Passenger {
 	public Passenger upgrade() {
 		Passenger upgradedPassenger = new Premium();
 		upgradedPassenger.copyPassengerState(this);
+		
+		String[] splitString = this.passID.split(":");
+		upgradedPassenger.passID = "P:" + splitString[1];
 
 		return upgradedPassenger;
 	}

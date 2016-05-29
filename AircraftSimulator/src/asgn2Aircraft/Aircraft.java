@@ -186,6 +186,7 @@ public abstract class Aircraft {
 		for(Passenger p : this.seats){
 			if (!p.isConfirmed()) throw new PassengerException("Passenger is in the incorrect state.  It is not confirmed.");
 			p.flyPassenger(departureTime);
+			this.status += Log.setPassengerMsg(p,"C","F");
 		}
 	}
 	
@@ -196,8 +197,10 @@ public abstract class Aircraft {
 	 * @return <code>Bookings</code> object containing the status.  
 	 */
 	public Bookings getBookings() {
+		int availSeats = this.capacity - getNumPassengers();
+		
 		Bookings booking = new Bookings(
-				this.numFirst, this.numBusiness, this.numPremium, this.numEconomy, getNumPassengers(), getAvailableSeats());
+				this.numFirst, this.numBusiness, this.numPremium, this.numEconomy, getNumPassengers() , availSeats);
 
 		return booking;
 	}
@@ -236,8 +239,7 @@ public abstract class Aircraft {
 	 * @return <code>int</code> number of Confirmed passengers 
 	 */
 	public int getNumPassengers() {
-		int sumPassengers = this.numFirst + this.numBusiness + this.numPremium + this.numEconomy;
-		return sumPassengers;
+		return this.seats.size();
 	}
 	
 	/**
@@ -445,15 +447,5 @@ public abstract class Aircraft {
 		} else {
 			this.numEconomy = addPassenger ? this.numEconomy + 1 : this.numEconomy - 1;
 		}
-	}
-	
-	/**
-	 * Simple method to return available seats on the Aircraft
-	 * 
-	 * @return int Available seats
-	 */
-	private int getAvailableSeats() {
-		int availSeats = this.capacity - getNumPassengers();
-		return availSeats;
 	}
 }

@@ -35,6 +35,9 @@ public class Premium extends Passenger {
 	public Passenger upgrade() {
 		Passenger upgradedPassenger = new Business();
 		upgradedPassenger.copyPassengerState(this);
+		
+		String[] splitString = this.passID.split(":");
+		upgradedPassenger.passID = "J:" + splitString[1];
 
 		return upgradedPassenger;
 	}

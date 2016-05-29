@@ -39,6 +39,6 @@ public class First extends Passenger {
 
 	@Override
 	public Passenger upgrade() {
-		return null;
+		return this;
 	}
 }
