@@ -432,7 +432,8 @@ public abstract class Aircraft {
 	/**
 	 * Determine the type of Passenger and this increment that class of seat 
 	 * 
-	 * @param p Passenger object
+	 * @param p Passenger object that is being tested
+	 * @param addPassenger boolean True to add seat, False to remove seat
 	 */
 	private void changeAircraftSeatingCount(Passenger p, boolean addPassenger) {
 		if (p instanceof First) {
