@@ -9,6 +9,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JTextField;
 import java.awt.Panel;
+import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
+import javax.swing.JSeparator;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 public class GUITest extends JFrame {
 
@@ -39,17 +45,22 @@ public class GUITest extends JFrame {
 		setBounds(100, 100, 666, 477);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
-		JPanel chartPanel = new JPanel();
-		chartPanel.setBackground(Color.ORANGE);
-		contentPane.add(chartPanel, BorderLayout.NORTH);
+		GridBagLayout gbl_contentPane = new GridBagLayout();
+		gbl_contentPane.columnWidths = new int[] {0, 0, 0, 10};
+		gbl_contentPane.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10};
+		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		contentPane.setLayout(gbl_contentPane);
 		
 		textField = new JTextField();
-		textField.setBackground(Color.GREEN);
-		contentPane.add(textField, BorderLayout.SOUTH);
-		textField.setColumns(5);
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.insets = new Insets(0, 0, 0, 5);
+		gbc_textField.fill = GridBagConstraints.VERTICAL;
+		gbc_textField.gridx = 1;
+		gbc_textField.gridy = 10;
+		contentPane.add(textField, gbc_textField);
+		textField.setColumns(10);
 	}
 
 }
