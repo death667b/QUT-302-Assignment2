@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import asgn2Aircraft.A380;
 import asgn2Aircraft.AircraftException;
+import asgn2Passengers.Business;
+import asgn2Passengers.PassengerException;
 
 /**
  * @author user
@@ -18,14 +20,16 @@ import asgn2Aircraft.AircraftException;
 public class A380Test {
 	
 	private A380 aircraftA380, aircraftErrors;
-	
+	private Business bizPassenger; 
 	
 	/**
+	 * @throws PassengerException
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUp() throws AircraftException {
+	public void setUp() throws AircraftException, PassengerException {
 		aircraftA380 = new A380("stringFlightCode", 123);
+		bizPassenger = new Business(50, 123);
 	}
 
 	/**
@@ -96,9 +100,33 @@ public class A380Test {
 	
 	/**
 	 * Test method for {@link asgn2Aircraft.Aircraft#cancelBooking(asgn2Passengers.Passenger, int)}.
+	 * @throws AircraftException 
+	 * @throws PassengerException 
 	 */
+	@Test(expected = AircraftException.class)
+	public void testAircraftNegitiveEconClassExpectFaiccccl() throws AircraftException {
+		aircraftErrors = new A380("123", 123, 123, 123, 123, -1);
+	}
+	
+	
+	@Test(expected = AircraftException.class)
+	public void testCancelBookingPassengerNotConfirmed() throws PassengerException, AircraftException {
+		aircraftA380.cancelBooking(bizPassenger, 100);
+	}
+	
+	@Test(expected = PassengerException.class)
+	public void testCancelBookingCancellationLessThanZero() throws AircraftException, PassengerException {
+		aircraftA380.confirmBooking(bizPassenger, -1);
+		aircraftA380.cancelBooking(bizPassenger, 100);
+	}
+	
+	@Test(expected = AircraftException.class)
+	public void testCancelBookingPassengerDoesntExist() {
+		fail("Not yet implemented"); // TODO
+	}
+	
 	@Test
-	public void testCancelBooking() {
+	public void testCancelBookingSuccess() {
 		fail("Not yet implemented"); // TODO
 	}
 
