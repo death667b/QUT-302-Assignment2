@@ -205,7 +205,7 @@ public class A380Test {
 	 */
 	@Test
 	public void testFlightEmpty() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(true, aircraftA380.flightEmpty());
 	}
 
 	/**
