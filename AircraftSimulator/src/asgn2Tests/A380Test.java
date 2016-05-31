@@ -5,6 +5,8 @@ package asgn2Tests;
 
 import static org.junit.Assert.*;
 
+import asgn2Aircraft.Aircraft;
+import asgn2Passengers.Passenger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,6 +14,10 @@ import asgn2Aircraft.A380;
 import asgn2Aircraft.AircraftException;
 import asgn2Passengers.Business;
 import asgn2Passengers.PassengerException;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author user
@@ -103,14 +109,11 @@ public class A380Test {
 	 * @throws AircraftException 
 	 * @throws PassengerException 
 	 */
-	@Test(expected = AircraftException.class)
-	public void testAircraftNegitiveEconClassExpectFaiccccl() throws AircraftException {
-		aircraftErrors = new A380("123", 123, 123, 123, 123, -1);
-	}
-	
+
+
 	
 	@Test(expected = PassengerException.class)
-	public void testCancelBookingPassengerNotConfirmed() throws PassengerException, AircraftException {
+	public void testCancelBookingPassengerNotConfirmed() throws AircraftException, PassengerException {
 		aircraftA380.cancelBooking(bizPassenger, 100);
 	}
 	
@@ -119,15 +122,22 @@ public class A380Test {
 		aircraftA380.confirmBooking(bizPassenger, -1);
 		aircraftA380.cancelBooking(bizPassenger, 100);
 	}
-	
+
 	@Test(expected = AircraftException.class)
-	public void testCancelBookingPassengerDoesntExist() {
-		fail("Not yet implemented"); // TODO
+	public void testCancelBookingPassengerDoesntExist() throws AircraftException, PassengerException, NoSuchFieldException, IllegalAccessException {
+		aircraftA380.confirmBooking(bizPassenger, 1);
+		Field reflect = Aircraft.class.getDeclaredField("seats");
+		reflect.setAccessible(true);
+		List<Passenger> seats = new ArrayList<>();
+		reflect.set(aircraftA380, seats);
+		reflect.setAccessible(false);
+		aircraftA380.cancelBooking(bizPassenger, 1);
 	}
 	
 	@Test
-	public void testCancelBookingSuccess() {
-		fail("Not yet implemented"); // TODO
+	public void testCancelBookingSuccess() throws AircraftException, PassengerException {
+		aircraftA380.confirmBooking(bizPassenger, 1);
+		aircraftA380.cancelBooking(bizPassenger, 1);
 	}
 
 	/**
