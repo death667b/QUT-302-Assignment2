@@ -204,16 +204,30 @@ public class A380Test {
 	 * Test method for {@link asgn2Aircraft.Aircraft#flightEmpty()}.
 	 */
 	@Test
-	public void testFlightEmpty() {
-		assertEquals(true, aircraftA380.flightEmpty());
+	public void testFlightEmptyTrue() {
+		assertTrue(aircraftA380.flightEmpty());
+	}
+
+	@Test
+	public void testFlightEmptyFalse() throws PassengerException, NoSuchFieldException, IllegalAccessException {
+		Field reflect = Aircraft.class.getDeclaredField("numFirst");
+		reflect.setAccessible(true);
+		reflect.set(aircraftA380, 1);
+		reflect.setAccessible(false);
+		assertFalse(aircraftA380.flightEmpty());
 	}
 
 	/**
 	 * Test method for {@link asgn2Aircraft.Aircraft#flightFull()}.
 	 */
 	@Test
-	public void testFlightFull() {
-		fail("Not yet implemented"); // TODO
+	public void testFlightFullTrue() {
+		assertTrue(aircraftA380.flightFull());
+	}
+
+	@Test
+	public void testFlightFullFalse() {
+		assertFalse(aircraftA380.flightFull());
 	}
 
 	/**
