@@ -102,9 +102,9 @@ public class GUITest extends JFrame {
 		gbc_probabilityPanel.gridy = 8;
 		mainPane.add(probabilityPanel, gbc_probabilityPanel);
 		GridBagLayout gbl_probabilityPanel = new GridBagLayout();
-		gbl_probabilityPanel.columnWidths = new int[]{169, 49, 0};
+		gbl_probabilityPanel.columnWidths = new int[]{145, 145};
 		gbl_probabilityPanel.rowHeights = new int[]{0, 14, 0, 0, 0, 0, 0};
-		gbl_probabilityPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_probabilityPanel.columnWeights = new double[]{0.0, 0.0};
 		gbl_probabilityPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		probabilityPanel.setLayout(gbl_probabilityPanel);
 		
@@ -127,6 +127,7 @@ public class GUITest extends JFrame {
 		
 		firstClTextField = new JTextField();
 		GridBagConstraints gbc_firstClTextField = new GridBagConstraints();
+		gbc_firstClTextField.anchor = GridBagConstraints.WEST;
 		gbc_firstClTextField.insets = new Insets(0, 0, 5, 0);
 		gbc_firstClTextField.gridx = 1;
 		gbc_firstClTextField.gridy = 1;
@@ -143,6 +144,7 @@ public class GUITest extends JFrame {
 		
 		textField_1 = new JTextField();
 		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
+		gbc_textField_1.anchor = GridBagConstraints.WEST;
 		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_1.gridx = 1;
 		gbc_textField_1.gridy = 2;
@@ -159,6 +161,7 @@ public class GUITest extends JFrame {
 		
 		textField_2 = new JTextField();
 		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
+		gbc_textField_2.anchor = GridBagConstraints.WEST;
 		gbc_textField_2.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_2.gridx = 1;
 		gbc_textField_2.gridy = 3;
@@ -175,6 +178,7 @@ public class GUITest extends JFrame {
 		
 		textField_3 = new JTextField();
 		GridBagConstraints gbc_textField_3 = new GridBagConstraints();
+		gbc_textField_3.anchor = GridBagConstraints.WEST;
 		gbc_textField_3.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_3.gridx = 1;
 		gbc_textField_3.gridy = 4;
@@ -191,6 +195,7 @@ public class GUITest extends JFrame {
 		
 		textField_4 = new JTextField();
 		GridBagConstraints gbc_textField_4 = new GridBagConstraints();
+		gbc_textField_4.anchor = GridBagConstraints.WEST;
 		gbc_textField_4.gridx = 1;
 		gbc_textField_4.gridy = 5;
 		probabilityPanel.add(textField_4, gbc_textField_4);
