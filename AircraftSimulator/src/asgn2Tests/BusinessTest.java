@@ -1,12 +1,15 @@
 /**
  * 
  */
-package asgn2Passengers;
+package asgn2Tests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import asgn2Passengers.Business;
+import asgn2Passengers.Passenger;
 
 /**
  * @author user
