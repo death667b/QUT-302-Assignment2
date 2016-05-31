@@ -197,7 +197,7 @@ public class A380Test {
 	 */
 	@Test
 	public void testFinalState() {
-		fail("Not yet implemented"); // TODO
+		assertEquals("A380:stringFlightCode:123 Pass: 0\n\n", aircraftA380.finalState());
 	}
 
 	/**
