@@ -1,0 +1,2 @@
+**********| Possible EdgeCases in Tests |**********
+Cancellation time shouldn't be allowed to be before booking time.
