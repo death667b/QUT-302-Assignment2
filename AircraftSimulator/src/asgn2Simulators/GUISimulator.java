@@ -6,6 +6,7 @@
  */
 package asgn2Simulators;
 
+import java.awt.EventQueue;
 import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
@@ -40,7 +41,17 @@ public class GUISimulator extends JFrame implements Runnable {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		initWindow();
+		EventQueue.invokeLater(new Runnable() {
+
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				
+			}
+		
+		
+		});
 
 	}
 	
