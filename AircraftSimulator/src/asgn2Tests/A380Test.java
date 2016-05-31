@@ -109,7 +109,7 @@ public class A380Test {
 	}
 	
 	
-	@Test(expected = AircraftException.class)
+	@Test(expected = PassengerException.class)
 	public void testCancelBookingPassengerNotConfirmed() throws PassengerException, AircraftException {
 		aircraftA380.cancelBooking(bizPassenger, 100);
 	}
