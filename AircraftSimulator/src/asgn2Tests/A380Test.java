@@ -45,8 +45,6 @@ public class A380Test {
 	public void testA380StringInt() {
 		fail("Not yet implemented"); // TODO
 	}
-	
-
 
 	/**
 	 * Test method for {@link asgn2Aircraft.A380#A380(java.lang.String, int, int, int, int, int)}.
@@ -110,17 +108,10 @@ public class A380Test {
 	 * @throws PassengerException 
 	 */
 
-
-	
-	@Test(expected = PassengerException.class)
-	public void testCancelBookingPassengerNotConfirmed() throws AircraftException, PassengerException {
-		aircraftA380.cancelBooking(bizPassenger, 100);
-	}
-	
-	@Test(expected = PassengerException.class)
-	public void testCancelBookingCancellationLessThanZero() throws AircraftException, PassengerException {
-		aircraftA380.confirmBooking(bizPassenger, -1);
-		aircraftA380.cancelBooking(bizPassenger, 100);
+	@Test
+	public void testCancelBookingSuccess() throws AircraftException, PassengerException {
+		aircraftA380.confirmBooking(bizPassenger, 1);
+		aircraftA380.cancelBooking(bizPassenger, 1);
 	}
 
 	@Test(expected = AircraftException.class)
@@ -133,19 +124,72 @@ public class A380Test {
 		reflect.setAccessible(false);
 		aircraftA380.cancelBooking(bizPassenger, 1);
 	}
+
+	@Test(expected = PassengerException.class)
+	public void testCancelBookingPassengerNotConfirmed() throws AircraftException, PassengerException {
+		aircraftA380.cancelBooking(bizPassenger, 100);
+	}
 	
-	@Test
-	public void testCancelBookingSuccess() throws AircraftException, PassengerException {
-		aircraftA380.confirmBooking(bizPassenger, 1);
-		aircraftA380.cancelBooking(bizPassenger, 1);
+	@Test(expected = PassengerException.class)
+	public void testCancelBookingCancellationLessThanZero() throws AircraftException, PassengerException {
+		aircraftA380.confirmBooking(bizPassenger, -1);
+		aircraftA380.cancelBooking(bizPassenger, 100);
 	}
 
 	/**
 	 * Test method for {@link asgn2Aircraft.Aircraft#confirmBooking(asgn2Passengers.Passenger, int)}.
 	 */
 	@Test
-	public void testConfirmBooking() {
-		fail("Not yet implemented"); // TODO
+	public void testConfirmBooking() throws AircraftException, PassengerException {
+		aircraftA380.confirmBooking(bizPassenger, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testConfirmBookingDepartureTimeGreaterThanZero() throws AircraftException, PassengerException, NoSuchFieldException, IllegalAccessException {
+		Field reflect = Aircraft.class.getDeclaredField("departureTime");
+		reflect.setAccessible(true);
+		reflect.set(aircraftA380, -1);
+		reflect.setAccessible(false);
+		aircraftA380.confirmBooking(bizPassenger, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testConfirmBookingConfirmationNotEqualOrGreaterZero() throws AircraftException, PassengerException {
+		aircraftA380.confirmBooking(bizPassenger, -1);
+	}
+
+	@Test(expected = AircraftException.class)
+	public void testConfirmBookingSeatsAvailable() throws NoSuchFieldException, IllegalAccessException, AircraftException, PassengerException {
+		Field reflectFirst = Aircraft.class.getDeclaredField("firstCapacity");
+		reflectFirst.setAccessible(true);
+		reflectFirst.set(aircraftA380, 0);
+		reflectFirst.setAccessible(false);
+		Field reflectBusiness = Aircraft.class.getDeclaredField("businessCapacity");
+		reflectBusiness.setAccessible(true);
+		reflectBusiness.set(aircraftA380, 0);
+		reflectBusiness.setAccessible(false);
+		Field reflectPremium = Aircraft.class.getDeclaredField("premiumCapacity");
+		reflectPremium.setAccessible(true);
+		reflectPremium.set(aircraftA380, 0);
+		reflectPremium.setAccessible(false);
+		Field reflectEconomy = Aircraft.class.getDeclaredField("economyCapacity");
+		reflectEconomy.setAccessible(true);
+		reflectEconomy.set(aircraftA380, 0);
+		reflectEconomy.setAccessible(false);
+		aircraftA380.confirmBooking(bizPassenger, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testConfirmBookingPassengerIncorrectState() throws NoSuchFieldException, IllegalAccessException, AircraftException, PassengerException {
+		Field reflectState = Passenger.class.getDeclaredField("newState");
+		reflectState.setAccessible(true);
+		reflectState.set(bizPassenger, false);
+		reflectState.setAccessible(false);
+		Field reflectQueue = Passenger.class.getDeclaredField("inQueue");
+		reflectQueue.setAccessible(true);
+		reflectQueue.set(bizPassenger, false);
+		reflectQueue.setAccessible(false);
+		aircraftA380.confirmBooking(bizPassenger, 1);
 	}
 
 	/**
