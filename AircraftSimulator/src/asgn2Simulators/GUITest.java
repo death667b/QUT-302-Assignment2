@@ -85,7 +85,7 @@ public class GUITest extends JFrame {
 		gbc_textAndGraphPanel.fill = GridBagConstraints.BOTH;
 		gbc_textAndGraphPanel.gridheight = 5;
 		gbc_textAndGraphPanel.gridwidth = 7;
-		gbc_textAndGraphPanel.insets = new Insets(10, 10, 10, 10);
+		gbc_textAndGraphPanel.insets = new Insets(0, 0, 0, 0);
 		gbc_textAndGraphPanel.gridx = 0;
 		gbc_textAndGraphPanel.gridy = 0;
 		mainPane.add(textAndGraphPanel, gbc_textAndGraphPanel);
