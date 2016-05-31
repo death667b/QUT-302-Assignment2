@@ -9,6 +9,7 @@ package asgn2Simulators;
 import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * @author hogan
@@ -39,8 +40,13 @@ public class GUISimulator extends JFrame implements Runnable {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		initWindow();
 
+	}
+	
+	private static void initWindow() {
+		JPanel simWindow = new JPanel();
+		
 	}
 
 }
