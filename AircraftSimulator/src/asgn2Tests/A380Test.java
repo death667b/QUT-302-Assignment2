@@ -5,19 +5,15 @@ package asgn2Tests;
 
 import static org.junit.Assert.*;
 
-import asgn2Aircraft.Aircraft;
-import asgn2Passengers.Passenger;
+import asgn2Passengers.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import asgn2Aircraft.A380;
 import asgn2Aircraft.AircraftException;
-import asgn2Passengers.Business;
-import asgn2Passengers.PassengerException;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author user
@@ -25,33 +21,42 @@ import java.util.List;
  */
 public class A380Test {
 	
-	private A380 aircraftA380, aircraftErrors;
-	private Business bizPassenger; 
-	
+	private A380 aircraftA380, aircraftA380Full, aircraftA380Partial, aircraftErrors;
+	private First partialFirst, fullFirst;
+	private Business bizPassenger, partialBusiness, fullBusiness;
+	private Premium partialPremium, fullPremium;
+	private Economy partialEconomy, fullEconomy;
+
 	/**
 	 * @throws PassengerException
-	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws AircraftException, PassengerException {
-		aircraftA380 = new A380("stringFlightCode", 123);
+		// Create an Aircraft and a single unassigned Passenger.
+		aircraftA380 = new A380("EmptyFlightCode", 123);
 		bizPassenger = new Business(50, 123);
-	}
 
-	/**
-	 * Test method for {@link asgn2Aircraft.A380#A380(java.lang.String, int)}.
-	 */
-	@Test
-	public void testA380StringInt() {
-		fail("Not yet implemented"); // TODO
-	}
+		// Create an Aircraft with a capacity of 1 seat in each class. Create and assign a single Passenger for each class. This Aircraft is partially full.
+		aircraftA380Partial = new A380("PartialFlightCode", 1, 2, 2, 2, 2);
+		partialFirst = new First(1, 1);
+		aircraftA380Partial.confirmBooking(partialFirst, 1);
+		partialBusiness = new Business(1, 1);
+		aircraftA380Partial.confirmBooking(partialBusiness, 1);
+		partialPremium = new Premium(1, 1);
+		aircraftA380Partial.confirmBooking(partialPremium, 1);
+		partialEconomy = new Economy(1, 1);
+		aircraftA380Partial.confirmBooking(partialEconomy, 1);
 
-	/**
-	 * Test method for {@link asgn2Aircraft.A380#A380(java.lang.String, int, int, int, int, int)}.
-	 */
-	@Test
-	public void testA380StringIntIntIntIntInt() {
-		fail("Not yet implemented"); // TODO
+		// Create an Aircraft with a capacity of 1 seat in each class. Create and assign a Passenger for each of those seats. This Aircraft is full.
+		aircraftA380Full = new A380("FullFlightCode", 1, 1, 1, 1, 1);
+		fullFirst = new First(1, 1);
+		aircraftA380Full.confirmBooking(fullFirst, 1);
+		fullBusiness = new Business(1, 1);
+		aircraftA380Full.confirmBooking(fullBusiness, 1);
+		fullPremium = new Premium(1, 1);
+		aircraftA380Full.confirmBooking(fullPremium, 1);
+		fullEconomy = new Economy(1, 1);
+		aircraftA380Full.confirmBooking(fullEconomy, 1);
 	}
 
 	/**
@@ -64,7 +69,7 @@ public class A380Test {
     
 	@Test
 	public void testAircraftGetFlightCode() {
-		assertEquals("A380:stringFlightCode:123 Capacity: 484 [F: 14 J: 64 P: 35 Y: 371]", aircraftA380.initialState());
+		assertEquals("A380:EmptyFlightCode:123 Capacity: 484 [F: 14 J: 64 P: 35 Y: 371]", aircraftA380.initialState());
 	}
 
 	@Test(expected = AircraftException.class)
@@ -83,22 +88,22 @@ public class A380Test {
 	}
 	
 	@Test(expected = AircraftException.class)
-	public void testAircraftNegitiveFirstClassExpectFail() throws AircraftException {
+	public void testAircraftNegativeFirstClassExpectFail() throws AircraftException {
 		aircraftErrors = new A380("123", 123, -1, 123, 123, 123);
 	}
 	
 	@Test(expected = AircraftException.class)
-	public void testAircraftNegitiveBusinessClassExpectFail() throws AircraftException {
+	public void testAircraftNegativeBusinessClassExpectFail() throws AircraftException {
 		aircraftErrors = new A380("123", 123, 123, -1, 123, 123);
 	}
 	
 	@Test(expected = AircraftException.class)
-	public void testAircraftNegitivePremClassExpectFail() throws AircraftException {
+	public void testAircraftNegativePremiumClassExpectFail() throws AircraftException {
 		aircraftErrors = new A380("123", 123, 123, 123, -1, 123);
 	}
 	
 	@Test(expected = AircraftException.class)
-	public void testAircraftNegitiveEconClassExpectFail() throws AircraftException {
+	public void testAircraftNegativeEconomyClassExpectFail() throws AircraftException {
 		aircraftErrors = new A380("123", 123, 123, 123, 123, -1);
 	}
 	
@@ -109,31 +114,15 @@ public class A380Test {
 	 */
 
 	@Test
-	public void testCancelBookingSuccess() throws AircraftException, PassengerException {
+	public void testCancelBooking() throws AircraftException, PassengerException {
 		aircraftA380.confirmBooking(bizPassenger, 1);
 		aircraftA380.cancelBooking(bizPassenger, 1);
 	}
 
 	@Test(expected = AircraftException.class)
 	public void testCancelBookingPassengerDoesntExist() throws AircraftException, PassengerException, NoSuchFieldException, IllegalAccessException {
-		aircraftA380.confirmBooking(bizPassenger, 1);
-		Field reflect = Aircraft.class.getDeclaredField("seats");
-		reflect.setAccessible(true);
-		List<Passenger> seats = new ArrayList<>();
-		reflect.set(aircraftA380, seats);
-		reflect.setAccessible(false);
+		bizPassenger.confirmSeat(1, 1);
 		aircraftA380.cancelBooking(bizPassenger, 1);
-	}
-
-	@Test(expected = PassengerException.class)
-	public void testCancelBookingPassengerNotConfirmed() throws AircraftException, PassengerException {
-		aircraftA380.cancelBooking(bizPassenger, 100);
-	}
-	
-	@Test(expected = PassengerException.class)
-	public void testCancelBookingCancellationLessThanZero() throws AircraftException, PassengerException {
-		aircraftA380.confirmBooking(bizPassenger, -1);
-		aircraftA380.cancelBooking(bizPassenger, 100);
 	}
 
 	/**
@@ -144,52 +133,9 @@ public class A380Test {
 		aircraftA380.confirmBooking(bizPassenger, 1);
 	}
 
-	@Test(expected = PassengerException.class)
-	public void testConfirmBookingDepartureTimeGreaterThanZero() throws AircraftException, PassengerException, NoSuchFieldException, IllegalAccessException {
-		Field reflect = Aircraft.class.getDeclaredField("departureTime");
-		reflect.setAccessible(true);
-		reflect.set(aircraftA380, -1);
-		reflect.setAccessible(false);
-		aircraftA380.confirmBooking(bizPassenger, 1);
-	}
-
-	@Test(expected = PassengerException.class)
-	public void testConfirmBookingConfirmationNotEqualOrGreaterZero() throws AircraftException, PassengerException {
-		aircraftA380.confirmBooking(bizPassenger, -1);
-	}
-
 	@Test(expected = AircraftException.class)
-	public void testConfirmBookingSeatsAvailable() throws NoSuchFieldException, IllegalAccessException, AircraftException, PassengerException {
-		Field reflectFirst = Aircraft.class.getDeclaredField("firstCapacity");
-		reflectFirst.setAccessible(true);
-		reflectFirst.set(aircraftA380, 0);
-		reflectFirst.setAccessible(false);
-		Field reflectBusiness = Aircraft.class.getDeclaredField("businessCapacity");
-		reflectBusiness.setAccessible(true);
-		reflectBusiness.set(aircraftA380, 0);
-		reflectBusiness.setAccessible(false);
-		Field reflectPremium = Aircraft.class.getDeclaredField("premiumCapacity");
-		reflectPremium.setAccessible(true);
-		reflectPremium.set(aircraftA380, 0);
-		reflectPremium.setAccessible(false);
-		Field reflectEconomy = Aircraft.class.getDeclaredField("economyCapacity");
-		reflectEconomy.setAccessible(true);
-		reflectEconomy.set(aircraftA380, 0);
-		reflectEconomy.setAccessible(false);
-		aircraftA380.confirmBooking(bizPassenger, 1);
-	}
-
-	@Test(expected = PassengerException.class)
-	public void testConfirmBookingPassengerIncorrectState() throws NoSuchFieldException, IllegalAccessException, AircraftException, PassengerException {
-		Field reflectState = Passenger.class.getDeclaredField("newState");
-		reflectState.setAccessible(true);
-		reflectState.set(bizPassenger, false);
-		reflectState.setAccessible(false);
-		Field reflectQueue = Passenger.class.getDeclaredField("inQueue");
-		reflectQueue.setAccessible(true);
-		reflectQueue.set(bizPassenger, false);
-		reflectQueue.setAccessible(false);
-		aircraftA380.confirmBooking(bizPassenger, 1);
+	public void testConfirmBookingNoSeatsAvailable() throws AircraftException, PassengerException {
+		aircraftA380Full.confirmBooking(bizPassenger, 1);
 	}
 
 	/**
@@ -197,7 +143,7 @@ public class A380Test {
 	 */
 	@Test
 	public void testFinalState() {
-		assertEquals("A380:stringFlightCode:123 Pass: 0\n\n", aircraftA380.finalState());
+		assertEquals("A380:EmptyFlightCode:123 Pass: 0\n\n", aircraftA380.finalState());
 	}
 
 	/**
@@ -209,11 +155,8 @@ public class A380Test {
 	}
 
 	@Test
-	public void testFlightEmptyFalse() throws PassengerException, NoSuchFieldException, IllegalAccessException {
-		Field reflect = Aircraft.class.getDeclaredField("numFirst");
-		reflect.setAccessible(true);
-		reflect.set(aircraftA380, 1);
-		reflect.setAccessible(false);
+	public void testFlightEmptyFalse() throws AircraftException, PassengerException {
+		aircraftA380.confirmBooking(bizPassenger, 1);
 		assertFalse(aircraftA380.flightEmpty());
 	}
 
@@ -221,8 +164,8 @@ public class A380Test {
 	 * Test method for {@link asgn2Aircraft.Aircraft#flightFull()}.
 	 */
 	@Test
-	public void testFlightFullTrue() {
-		assertTrue(aircraftA380.flightFull());
+	public void testFlightFullTrue() throws NoSuchFieldException, IllegalAccessException, AircraftException {
+		assertTrue(aircraftA380Full.flightFull());
 	}
 
 	@Test
@@ -234,8 +177,8 @@ public class A380Test {
 	 * Test method for {@link asgn2Aircraft.Aircraft#flyPassengers(int)}.
 	 */
 	@Test
-	public void testFlyPassengers() {
-		fail("Not yet implemented"); // TODO
+	public void testFlyPassengers() throws PassengerException {
+		aircraftA380.flyPassengers(1);
 	}
 
 	/**
@@ -243,7 +186,7 @@ public class A380Test {
 	 */
 	@Test
 	public void testGetBookings() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(aircraftA380Full.getBookings());
 	}
 
 	/**
@@ -251,7 +194,7 @@ public class A380Test {
 	 */
 	@Test
 	public void testGetNumBusiness() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(aircraftA380.getNumBusiness());
 	}
 
 	/**
@@ -259,7 +202,7 @@ public class A380Test {
 	 */
 	@Test
 	public void testGetNumEconomy() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(aircraftA380.getNumEconomy());
 	}
 
 	/**
@@ -267,7 +210,7 @@ public class A380Test {
 	 */
 	@Test
 	public void testGetNumFirst() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(aircraftA380.getNumFirst());
 	}
 
 	/**
@@ -275,7 +218,7 @@ public class A380Test {
 	 */
 	@Test
 	public void testGetNumPassengers() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(aircraftA380.getNumPassengers());
 	}
 
 	/**
@@ -283,7 +226,7 @@ public class A380Test {
 	 */
 	@Test
 	public void testGetNumPremium() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(aircraftA380.getNumPremium());
 	}
 
 	/**
@@ -291,7 +234,7 @@ public class A380Test {
 	 */
 	@Test
 	public void testGetPassengers() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(aircraftA380.getPassengers());
 	}
 
 	/**
@@ -299,39 +242,60 @@ public class A380Test {
 	 */
 	@Test
 	public void testGetStatus() {
-		fail("Not yet implemented"); // TODO
+		assertEquals("1::0::F:0::J:0::P:0::Y:0\n", aircraftA380.getStatus(1));
 	}
 
 	/**
 	 * Test method for {@link asgn2Aircraft.Aircraft#hasPassenger(asgn2Passengers.Passenger)}.
 	 */
 	@Test
-	public void testHasPassenger() {
-		fail("Not yet implemented"); // TODO
+	public void testHasPassengerTrue() throws AircraftException, PassengerException {
+		aircraftA380.confirmBooking(bizPassenger, 1);
+		assertTrue(aircraftA380.hasPassenger(bizPassenger));
+	}
+
+	@Test
+	public void testHasPassengerFalse() throws AircraftException, PassengerException {
+		assertFalse(aircraftA380.hasPassenger(bizPassenger));
 	}
 
 	/**
 	 * Test method for {@link asgn2Aircraft.Aircraft#initialState()}.
 	 */
 	@Test
-	public void testInitialState() {
-		fail("Not yet implemented"); // TODO
+	public void testInitialStatePass() {
+		assertEquals("A380:FullFlightCode:1 Capacity: 4 [F: 1 J: 1 P: 1 Y: 1]", aircraftA380Full.initialState());
+	}
+
+	@Test
+	public void testInitialStateFail() {
+		assertNotEquals("", aircraftA380Full.initialState());
 	}
 
 	/**
 	 * Test method for {@link asgn2Aircraft.Aircraft#seatsAvailable(asgn2Passengers.Passenger)}.
 	 */
 	@Test
-	public void testSeatsAvailable() {
-		fail("Not yet implemented"); // TODO
+	public void testSeatsAvailablePass() {
+		assertTrue(aircraftA380.seatsAvailable(bizPassenger));
+	}
+
+	@Test
+	public void testSeatsAvailableFail() {
+		assertFalse(aircraftA380Full.seatsAvailable(bizPassenger));
 	}
 
 	/**
 	 * Test method for {@link asgn2Aircraft.Aircraft#toString()}.
 	 */
 	@Test
-	public void testToString() {
-		fail("Not yet implemented"); // TODO
+	public void testToStringPass() {
+		assertEquals("A380:EmptyFlightCode:123 Count: 0 [F: 0 J: 0 P: 0 Y: 0]", aircraftA380.toString());
+	}
+
+	@Test
+	public void testToStringFail() {
+		assertNotEquals("", aircraftA380.toString());
 	}
 
 	/**
@@ -339,7 +303,91 @@ public class A380Test {
 	 */
 	@Test
 	public void testUpgradeBookings() {
-		fail("Not yet implemented"); // TODO
+		aircraftA380Partial.upgradeBookings();
+		assertEquals("A380:PartialFlightCode:1 Count: 4 [F: 2 J: 1 P: 1 Y: 0]", aircraftA380Partial.toString());
 	}
 
+	@Test
+	public void testUpgradeBookingsToFirstPossible() {
+		aircraftA380Partial.upgradeBookings();
+
+		// Confirm our old Business Class Passenger is now First Class
+		String[] id = partialBusiness.getPassID().split(":");
+		List<Passenger> passengerList = aircraftA380Partial.getPassengers();
+		for (Passenger passenger : passengerList) {
+			if (Objects.equals(passenger.getPassID().split(":")[1], id[1])) {
+				assertTrue(passenger instanceof First);
+			}
+		}
+	}
+
+	@Test
+	public void testUpgradeBookingsToFirstNotPossible() {
+		aircraftA380Full.upgradeBookings();
+
+		// Confirm our old Business Class Passenger is now First Class
+		String[] id = fullBusiness.getPassID().split(":");
+		List<Passenger> passengerList = aircraftA380Full.getPassengers();
+		for (Passenger passenger : passengerList) {
+			if (Objects.equals(passenger.getPassID().split(":")[1], id[1])) {
+				assertTrue(passenger instanceof Business);
+			}
+		}
+	}
+
+	@Test
+	public void testUpgradeBookingsToBusinessPossible() {
+		aircraftA380Partial.upgradeBookings();
+
+		// Confirm our old Premium Class Passenger is now Business Class
+		String[] id = partialPremium.getPassID().split(":");
+		List<Passenger> passengerList = aircraftA380Partial.getPassengers();
+		for (Passenger passenger : passengerList) {
+			if (Objects.equals(passenger.getPassID().split(":")[1], id[1])) {
+				assertTrue(passenger instanceof Business);
+			}
+		}
+	}
+
+	@Test
+	public void testUpgradeBookingsToBusinessNotPossible() {
+		aircraftA380Full.upgradeBookings();
+
+		// Confirm our old Business Class Passenger is now First Class
+		String[] id = fullPremium.getPassID().split(":");
+		List<Passenger> passengerList = aircraftA380Full.getPassengers();
+		for (Passenger passenger : passengerList) {
+			if (Objects.equals(passenger.getPassID().split(":")[1], id[1])) {
+				assertTrue(passenger instanceof Premium);
+			}
+		}
+	}
+
+	@Test
+	public void testUpgradeBookingsToPremiumPossible() {
+		aircraftA380Partial.upgradeBookings();
+
+		// Confirm our old Economy Class Passenger is now Premium Class
+		String[] id = partialEconomy.getPassID().split(":");
+		List<Passenger> passengerList = aircraftA380Partial.getPassengers();
+		for (Passenger passenger : passengerList) {
+			if (Objects.equals(passenger.getPassID().split(":")[1], id[1])) {
+				assertTrue(passenger instanceof Premium);
+			}
+		}
+	}
+
+	@Test
+	public void testUpgradeBookingsToPremiumNotPossible() {
+		aircraftA380Full.upgradeBookings();
+
+		// Confirm our old Business Class Passenger is now First Class
+		String[] id = fullEconomy.getPassID().split(":");
+		List<Passenger> passengerList = aircraftA380Full.getPassengers();
+		for (Passenger passenger : passengerList) {
+			if (Objects.equals(passenger.getPassID().split(":")[1], id[1])) {
+				assertTrue(passenger instanceof Economy);
+			}
+		}
+	}
 }
