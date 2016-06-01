@@ -10,12 +10,13 @@ import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.swing.JButton;
 
 import asgn2Aircraft.AircraftException;
 import asgn2Passengers.PassengerException;
-import asgn2Simulators.GUISimulator.ButtonListener;
 
 /**
  * Class to operate the simulation, taking parameters and utility methods from the Simulator
@@ -49,7 +50,7 @@ public class SimulationRunner {
 						startButton.addMouseListener(new MouseListener() {
 							@Override
 							public void mouseClicked(MouseEvent e) {
-								startSim(simGUI.getStartingValues());
+								startSim(simGUI.getStartingValues(), simGUI);
 							}
 	
 							@Override
@@ -72,7 +73,7 @@ public class SimulationRunner {
 		}
 	}
 	
-	private static void startSim(String[] args){
+	private static void startSim(String[] args, GUISimulator simGUI){
 		final int NUM_ARGS = 10; 
 		Simulator s = null; 
 		Log l = null; 
@@ -101,7 +102,7 @@ public class SimulationRunner {
 		//Run the simulation 
 		SimulationRunner sr = new SimulationRunner(s,l);
 		try {
-			sr.runSimulation();
+			sr.runSimulation(simGUI);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
@@ -161,6 +162,7 @@ public class SimulationRunner {
 	/**
 	 * Method to run the simulation from start to finish. 
 	 * Exceptions are propagated upwards as necessary 
+	 * @param simGUI 
 	 * 
 	 * @throws AircraftException See methods from {@link asgn2Simulators.Simulator} 
 	 * @throws PassengerException See methods from {@link asgn2Simulators.Simulator} 
@@ -168,11 +170,13 @@ public class SimulationRunner {
 	 * @throws IOException on logging failures See methods from {@link asgn2Simulators.Log} 
 
 	 */
-	public void runSimulation() throws AircraftException, PassengerException, SimulationException, IOException {
+	public void runSimulation(GUISimulator simGUI) throws AircraftException, PassengerException, SimulationException, IOException {
 		
+		simGUI.clearTextScrollPanel();
 		this.sim.createSchedule();
 		this.log.initialEntry(this.sim);
-		
+		displayInitialEnttry(simGUI);
+
 		//Main simulation loop 
 		for (int time=0; time<=Constants.DURATION; time++) {
 			this.sim.resetStatus(time); 
@@ -191,10 +195,36 @@ public class SimulationRunner {
 			//Log progress 
 			this.log.logQREntries(time, sim);
 			this.log.logEntry(time,this.sim);
+			displayDailyLogs(simGUI, time);
 		}
 		this.sim.finaliseQueuedAndCancelledPassengers(Constants.DURATION); 
 		this.log.logQREntries(Constants.DURATION, sim);
 		this.log.finalise(this.sim);
+		displayFinalLog(simGUI);
+	}
+	
+	private void displayInitialEnttry(GUISimulator simGUI) throws SimulationException{
+		String setText = "";
+		setText = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+		setText += ": Start of Simulation\n";
+		setText += sim.toString() + "\n";
+		setText += sim.getFlights(Constants.FIRST_FLIGHT).initialState();
+		
+		simGUI.textScrollPanel(true, setText);
+	}
+	
+	private void displayDailyLogs(GUISimulator simGUI, int time) throws SimulationException{
+		boolean flying = (time >= Constants.FIRST_FLIGHT);
+		simGUI.textScrollPanel(true, sim.getSummary(time, flying));
+	}
+
+	private void displayFinalLog(GUISimulator simGUI){
+		String setText = "\n";
+		setText += new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+		setText += ": End of Simulation\n";
+		setText += sim.finalState();
+		
+		simGUI.textScrollPanel(true, setText);
 	}
 	
 }

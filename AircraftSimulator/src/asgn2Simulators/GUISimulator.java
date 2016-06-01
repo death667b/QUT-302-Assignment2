@@ -8,21 +8,21 @@ package asgn2Simulators;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
 
@@ -47,6 +47,7 @@ public class GUISimulator extends JFrame implements Runnable {
 	private JTextField premiumClTextField;
 	private JTextField economyClTextField;
 	private JTextField canellationTextField;
+	private JTextArea reportText;
 	private JLabel labelDailyBookingMean;
 	private JLabel labelMinimumBookings;
 	private JLabel labelBookingStandardDevation;
@@ -57,6 +58,7 @@ public class GUISimulator extends JFrame implements Runnable {
 	private JLabel labelCancellation;
 	private JLabel labelProbabilityPanelTitle;
 	private JLabel labelSettingsPanelTitle;
+	private JScrollPane logsScrollPane;
 	private JButton startButton;
 	
 	/**
@@ -66,8 +68,6 @@ public class GUISimulator extends JFrame implements Runnable {
 	public GUISimulator(String arg0) throws HeadlessException {
 		super(arg0);
 		drawGUIWindow();
-		
-		//startButton.addMouseListener(new ButtonListener());
 	}
 
 
@@ -129,6 +129,18 @@ public class GUISimulator extends JFrame implements Runnable {
 		
 		return args;
 	}
+	
+	public void textScrollPanel(boolean status, String text){
+		
+		if (status) textAndGraphPanel.add(logsScrollPane);
+		else textAndGraphPanel.remove(logsScrollPane);
+		
+		reportText.setText(reportText.getText() + text);
+	}
+	
+	public void clearTextScrollPanel(){
+		reportText.setText("");
+	}
 		
 	public void drawGUIWindow() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -156,6 +168,15 @@ public class GUISimulator extends JFrame implements Runnable {
 		gbc_textAndGraphPanel.gridx = 0;
 		gbc_textAndGraphPanel.gridy = 0;
 		mainPane.add(textAndGraphPanel, gbc_textAndGraphPanel);
+		
+		reportText = new JTextArea();
+		reportText.setColumns(60);
+		reportText.setRows(14);
+		reportText.setLineWrap(true);
+		logsScrollPane = new JScrollPane(reportText);
+		logsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		logsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		textAndGraphPanel.add(logsScrollPane);
 		
 		settingsPanel = new JPanel();
 		settingsPanel.setBackground(Color.WHITE);
@@ -245,6 +266,7 @@ public class GUISimulator extends JFrame implements Runnable {
 		settingsPanel.add(labelMinimumBookings, gbc_labelMinimumBookings);
 		
 		minBookingsTextField = new JTextField();
+		minBookingsTextField.setEditable(false);
 		GridBagConstraints gbc_minBookingsTextField = new GridBagConstraints();
 		gbc_minBookingsTextField.anchor = GridBagConstraints.WEST;
 		gbc_minBookingsTextField.insets = new Insets(0, 0, 5, 0);
@@ -392,41 +414,4 @@ public class GUISimulator extends JFrame implements Runnable {
 		gbc_startButton.gridy = 14;
 		mainPane.add(startButton, gbc_startButton);
 	}
-		
-	public class ButtonListener implements MouseListener {
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			System.out.println(e);
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-
-		
-	}
-
 }
