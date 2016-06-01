@@ -6,7 +6,9 @@
  */
 package asgn2Simulators;
 
+import java.awt.EventQueue;
 import java.io.IOException;
+
 
 import asgn2Aircraft.AircraftException;
 import asgn2Passengers.PassengerException;
@@ -30,6 +32,20 @@ public class SimulationRunner {
 		Simulator s = null; 
 		Log l = null; 
 		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GUISimulator simGUI = new GUISimulator("Aircraft booking simulator");
+
+					simGUI.displayDefaultsValues(true);
+					
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
 		try {
 			switch (args.length) {
 				case NUM_ARGS: {
@@ -38,6 +54,7 @@ public class SimulationRunner {
 				}
 				case 0: {
 					s = new Simulator(); 
+					
 					break;
 				}
 				default: {
@@ -50,15 +67,23 @@ public class SimulationRunner {
 			System.exit(-1);
 		}
 	
+
+		
 		//Run the simulation 
 		SimulationRunner sr = new SimulationRunner(s,l);
+		
+		
+		/*
 		try {
 			sr.runSimulation();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
-		} 
+		} */
 	}
+	
+
+	
 	/**
 	 * Helper to process args for Simulator  
 	 * 
@@ -119,6 +144,7 @@ public class SimulationRunner {
 
 	 */
 	public void runSimulation() throws AircraftException, PassengerException, SimulationException, IOException {
+		
 		this.sim.createSchedule();
 		this.log.initialEntry(this.sim);
 		
@@ -145,4 +171,7 @@ public class SimulationRunner {
 		this.log.logQREntries(Constants.DURATION, sim);
 		this.log.finalise(this.sim);
 	}
+	
 }
+
+
