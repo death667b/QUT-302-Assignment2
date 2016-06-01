@@ -96,6 +96,7 @@ public class GUITest extends JFrame {
 		settingsPanel.setBackground(Color.WHITE);
 		settingsPanel.setBorder(new LineBorder(Color.GRAY, 2, true));
 		GridBagConstraints gbc_settingsPanel = new GridBagConstraints();
+		gbc_settingsPanel.ipady = 5;
 		gbc_settingsPanel.insets = new Insets(0, 0, 5, 5);
 		gbc_settingsPanel.fill = GridBagConstraints.BOTH;
 		gbc_settingsPanel.gridx = 1;
@@ -207,6 +208,7 @@ public class GUITest extends JFrame {
 		probabilityPanel.setBackground(Color.WHITE);
 		probabilityPanel.setBorder(new LineBorder(Color.GRAY, 2, true));
 		GridBagConstraints gbc_probabilityPanel = new GridBagConstraints();
+		gbc_probabilityPanel.ipady = 5;
 		gbc_probabilityPanel.gridheight = 6;
 		gbc_probabilityPanel.gridwidth = 2;
 		gbc_probabilityPanel.insets = new Insets(0, 0, 5, 5);
