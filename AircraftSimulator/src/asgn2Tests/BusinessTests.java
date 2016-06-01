@@ -69,8 +69,43 @@ public class BusinessTests {
 	 * Test method for {@link asgn2Passengers.Passenger#cancelSeat(int)}.
 	 */
 	@Test
-	public void testCancelSeat() {
-		fail("Not yet implemented"); // TODO
+	public void testCancelSeat() throws PassengerException {
+		passenger.confirmSeat(1, 1);
+		passenger.cancelSeat(1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testCancelSeat_isNew() throws PassengerException {
+		passenger.cancelSeat(1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testCancelSeat_isQueued() throws PassengerException {
+		passenger.queuePassenger(1, 1);
+		passenger.cancelSeat(1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testCancelSeat_isRefused() throws PassengerException {
+		passenger.refusePassenger(1);
+		passenger.cancelSeat(1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testCancelSeat_isFlown() throws PassengerException {
+		passenger.confirmSeat(1, 1);
+		passenger.flyPassenger(1);
+		passenger.cancelSeat(1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testCancelSeat_CancellationLessThanZero() throws PassengerException {
+
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testCancelSeat_DepartureLessThanCancellation() throws PassengerException {
+
 	}
 
 	/**
