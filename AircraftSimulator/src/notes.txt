@@ -1,2 +1,5 @@
 **********| Possible EdgeCases in Tests |**********
-Cancellation time shouldn't be allowed to be before booking time.
+cancellationTime shouldn't be allowed to be before booking time in cancelBooking
+confirmationTime shouldn't be allowed to be before booking time in confirmBooking
+capacity should not be allowed to be 0 in total.
+I don't like that we're testing getters with just notNull, it seems bad.
