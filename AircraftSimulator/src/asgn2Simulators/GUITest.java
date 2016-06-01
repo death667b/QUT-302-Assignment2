@@ -45,7 +45,9 @@ public class GUITest extends JFrame {
 	private JPanel textAndGraphPanel;
 	private JButton btnStart;
 	private JPanel probabilityPanel;
-	private JLabel lblNewLabel;
+	private JLabel labelProbabilityPanelTitle;
+	private JPanel settingsPanel;
+	private JLabel labelSettingsPanelTitle;
 
 	/**
 	 * Launch the application.
@@ -76,19 +78,130 @@ public class GUITest extends JFrame {
 		gbl_mainPane.columnWidths = new int[] {30, 180, 110, 30, 180, 110, 30};
 		gbl_mainPane.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 10};
 		gbl_mainPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		gbl_mainPane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_mainPane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		mainPane.setLayout(gbl_mainPane);
 		
 		textAndGraphPanel = new JPanel();
 		textAndGraphPanel.setBackground(new Color(255, 255, 204));
 		GridBagConstraints gbc_textAndGraphPanel = new GridBagConstraints();
 		gbc_textAndGraphPanel.fill = GridBagConstraints.BOTH;
-		gbc_textAndGraphPanel.gridheight = 5;
+		gbc_textAndGraphPanel.gridheight = 7;
 		gbc_textAndGraphPanel.gridwidth = 7;
-		gbc_textAndGraphPanel.insets = new Insets(0, 0, 0, 0);
+		gbc_textAndGraphPanel.insets = new Insets(0, 0, 5, 0);
 		gbc_textAndGraphPanel.gridx = 0;
 		gbc_textAndGraphPanel.gridy = 0;
 		mainPane.add(textAndGraphPanel, gbc_textAndGraphPanel);
+		
+		settingsPanel = new JPanel();
+		settingsPanel.setBackground(Color.WHITE);
+		settingsPanel.setBorder(new LineBorder(Color.GRAY, 2, true));
+		GridBagConstraints gbc_settingsPanel = new GridBagConstraints();
+		gbc_settingsPanel.insets = new Insets(0, 0, 5, 5);
+		gbc_settingsPanel.fill = GridBagConstraints.BOTH;
+		gbc_settingsPanel.gridx = 1;
+		gbc_settingsPanel.gridy = 8;
+		gbc_settingsPanel.gridwidth = 2;
+		gbc_settingsPanel.gridheight = 6;
+		mainPane.add(settingsPanel, gbc_settingsPanel);
+		GridBagLayout gbl_settingsPanel = new GridBagLayout();
+		gbl_settingsPanel.columnWidths = new int[]{145, 145};
+		gbl_settingsPanel.rowHeights = new int[] {0, 14, 0, 0, 0, 0, 0};
+		gbl_settingsPanel.columnWeights = new double[]{0.0, 0.0};
+		gbl_settingsPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		settingsPanel.setLayout(gbl_settingsPanel);
+		
+		labelSettingsPanelTitle = new JLabel("Settings");
+		labelSettingsPanelTitle.setFont(new Font("Rockwell", Font.BOLD, 16));
+		GridBagConstraints gbc_labelSettingsPanelTitle = new GridBagConstraints();
+		gbc_labelSettingsPanelTitle.insets = new Insets(0, 0, 5, 5);
+		gbc_labelSettingsPanelTitle.gridx = 0;
+		gbc_labelSettingsPanelTitle.gridy = 0;
+		gbc_labelSettingsPanelTitle.gridwidth = 2;
+		settingsPanel.add(labelSettingsPanelTitle, gbc_labelSettingsPanelTitle);
+		
+		JLabel labelSeed = new JLabel("Seed");
+		GridBagConstraints gbc_labelSeed = new GridBagConstraints();
+		gbc_labelSeed.anchor = GridBagConstraints.EAST;
+		gbc_labelSeed.insets = new Insets(0, 0, 5, 5);
+		gbc_labelSeed.gridx = 0;
+		gbc_labelSeed.gridy = 1;
+		settingsPanel.add(labelSeed, gbc_labelSeed);
+		
+		seedTextField = new JTextField();
+		GridBagConstraints gbc_seedTextField = new GridBagConstraints();
+		gbc_seedTextField.anchor = GridBagConstraints.WEST;
+		gbc_seedTextField.insets = new Insets(0, 0, 5, 0);
+		gbc_seedTextField.gridx = 1;
+		gbc_seedTextField.gridy = 1;
+		settingsPanel.add(seedTextField, gbc_seedTextField);
+		seedTextField.setColumns(10);
+		
+		JLabel labelMaxQueueSize = new JLabel("Max Queue Size");
+		GridBagConstraints gbc_labelMaxQueueSize = new GridBagConstraints();
+		gbc_labelMaxQueueSize.anchor = GridBagConstraints.EAST;
+		gbc_labelMaxQueueSize.insets = new Insets(0, 0, 5, 5);
+		gbc_labelMaxQueueSize.gridx = 0;
+		gbc_labelMaxQueueSize.gridy = 2;
+		settingsPanel.add(labelMaxQueueSize, gbc_labelMaxQueueSize);
+		
+		maxQueSizeTextField = new JTextField();
+		GridBagConstraints gbc_maxQueSizeTextField = new GridBagConstraints();
+		gbc_maxQueSizeTextField.anchor = GridBagConstraints.WEST;
+		gbc_maxQueSizeTextField.insets = new Insets(0, 0, 5, 0);
+		gbc_maxQueSizeTextField.gridx = 1;
+		gbc_maxQueSizeTextField.gridy = 2;
+		settingsPanel.add(maxQueSizeTextField, gbc_maxQueSizeTextField);
+		maxQueSizeTextField.setColumns(10);
+		
+		labelDailyBookingMean = new JLabel("Daily Booking Mean");
+		GridBagConstraints gbc_labelDailyBookingMean = new GridBagConstraints();
+		gbc_labelDailyBookingMean.anchor = GridBagConstraints.EAST;
+		gbc_labelDailyBookingMean.insets = new Insets(0, 0, 5, 5);
+		gbc_labelDailyBookingMean.gridx = 0;
+		gbc_labelDailyBookingMean.gridy = 3;
+		settingsPanel.add(labelDailyBookingMean, gbc_labelDailyBookingMean);
+		
+		dailyBookingMeanTextField = new JTextField();
+		GridBagConstraints gbc_dailyBookingMeanTextField = new GridBagConstraints();
+		gbc_dailyBookingMeanTextField.anchor = GridBagConstraints.WEST;
+		gbc_dailyBookingMeanTextField.insets = new Insets(0, 0, 5, 0);
+		gbc_dailyBookingMeanTextField.gridx = 1;
+		gbc_dailyBookingMeanTextField.gridy = 3;
+		settingsPanel.add(dailyBookingMeanTextField, gbc_dailyBookingMeanTextField);
+		dailyBookingMeanTextField.setColumns(10);
+		
+		labelMinimumBookings = new JLabel("Minimum Bookings");
+		GridBagConstraints gbc_labelMinimumBookings = new GridBagConstraints();
+		gbc_labelMinimumBookings.anchor = GridBagConstraints.EAST;
+		gbc_labelMinimumBookings.insets = new Insets(0, 0, 5, 5);
+		gbc_labelMinimumBookings.gridx = 0;
+		gbc_labelMinimumBookings.gridy = 4;
+		settingsPanel.add(labelMinimumBookings, gbc_labelMinimumBookings);
+		
+		minBookingsTextField = new JTextField();
+		GridBagConstraints gbc_minBookingsTextField = new GridBagConstraints();
+		gbc_minBookingsTextField.anchor = GridBagConstraints.WEST;
+		gbc_minBookingsTextField.insets = new Insets(0, 0, 5, 0);
+		gbc_minBookingsTextField.gridx = 1;
+		gbc_minBookingsTextField.gridy = 4;
+		settingsPanel.add(minBookingsTextField, gbc_minBookingsTextField);
+		minBookingsTextField.setColumns(10);
+		
+		labelBookingStandardDevation = new JLabel("Booking Standard Devation");
+		GridBagConstraints gbc_labelBookingStandardDevation = new GridBagConstraints();
+		gbc_labelBookingStandardDevation.anchor = GridBagConstraints.EAST;
+		gbc_labelBookingStandardDevation.insets = new Insets(0, 0, 0, 5);
+		gbc_labelBookingStandardDevation.gridx = 0;
+		gbc_labelBookingStandardDevation.gridy = 5;
+		settingsPanel.add(labelBookingStandardDevation, gbc_labelBookingStandardDevation);
+		
+		bookingStanDevTextField = new JTextField();
+		GridBagConstraints gbc_bookingStanDevTextField = new GridBagConstraints();
+		gbc_bookingStanDevTextField.anchor = GridBagConstraints.WEST;
+		gbc_bookingStanDevTextField.gridx = 1;
+		gbc_bookingStanDevTextField.gridy = 5;
+		settingsPanel.add(bookingStanDevTextField, gbc_bookingStanDevTextField);
+		bookingStanDevTextField.setColumns(10);
 		
 		probabilityPanel = new JPanel();
 		probabilityPanel.setBackground(Color.WHITE);
@@ -103,19 +216,19 @@ public class GUITest extends JFrame {
 		mainPane.add(probabilityPanel, gbc_probabilityPanel);
 		GridBagLayout gbl_probabilityPanel = new GridBagLayout();
 		gbl_probabilityPanel.columnWidths = new int[]{145, 145};
-		gbl_probabilityPanel.rowHeights = new int[]{0, 14, 0, 0, 0, 0, 0};
+		gbl_probabilityPanel.rowHeights = new int[] {0, 14, 0, 0, 0, 0, 0};
 		gbl_probabilityPanel.columnWeights = new double[]{0.0, 0.0};
 		gbl_probabilityPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		probabilityPanel.setLayout(gbl_probabilityPanel);
 		
-		lblNewLabel = new JLabel("Probabilities");
-		lblNewLabel.setFont(new Font("Rockwell", Font.BOLD, 16));
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.gridwidth = 2;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		probabilityPanel.add(lblNewLabel, gbc_lblNewLabel);
+		labelProbabilityPanelTitle = new JLabel("Probabilities");
+		labelProbabilityPanelTitle.setFont(new Font("Rockwell", Font.BOLD, 16));
+		GridBagConstraints gbc_labelProbabilityPanelTitle = new GridBagConstraints();
+		gbc_labelProbabilityPanelTitle.gridwidth = 2;
+		gbc_labelProbabilityPanelTitle.insets = new Insets(0, 0, 5, 5);
+		gbc_labelProbabilityPanelTitle.gridx = 0;
+		gbc_labelProbabilityPanelTitle.gridy = 0;
+		probabilityPanel.add(labelProbabilityPanelTitle, gbc_labelProbabilityPanelTitle);
 		
 		labelFirstCl = new JLabel("First Class");
 		GridBagConstraints gbc_labelFirstCl = new GridBagConstraints();
@@ -200,92 +313,6 @@ public class GUITest extends JFrame {
 		gbc_textField_4.gridy = 5;
 		probabilityPanel.add(textField_4, gbc_textField_4);
 		textField_4.setColumns(10);
-		
-		JLabel labelSeed = new JLabel("Seed");
-		GridBagConstraints gbc_labelSeed = new GridBagConstraints();
-		gbc_labelSeed.anchor = GridBagConstraints.EAST;
-		gbc_labelSeed.insets = new Insets(0, 0, 5, 5);
-		gbc_labelSeed.gridx = 1;
-		gbc_labelSeed.gridy = 9;
-		mainPane.add(labelSeed, gbc_labelSeed);
-		
-		seedTextField = new JTextField();
-		GridBagConstraints gbc_seedTextField = new GridBagConstraints();
-		gbc_seedTextField.anchor = GridBagConstraints.WEST;
-		gbc_seedTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_seedTextField.gridx = 2;
-		gbc_seedTextField.gridy = 9;
-		mainPane.add(seedTextField, gbc_seedTextField);
-		seedTextField.setColumns(10);
-		
-		JLabel labelMaxQueueSize = new JLabel("Max Queue Size");
-		GridBagConstraints gbc_labelMaxQueueSize = new GridBagConstraints();
-		gbc_labelMaxQueueSize.anchor = GridBagConstraints.EAST;
-		gbc_labelMaxQueueSize.insets = new Insets(0, 0, 5, 5);
-		gbc_labelMaxQueueSize.gridx = 1;
-		gbc_labelMaxQueueSize.gridy = 10;
-		mainPane.add(labelMaxQueueSize, gbc_labelMaxQueueSize);
-		
-		maxQueSizeTextField = new JTextField();
-		GridBagConstraints gbc_maxQueSizeTextField = new GridBagConstraints();
-		gbc_maxQueSizeTextField.anchor = GridBagConstraints.WEST;
-		gbc_maxQueSizeTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_maxQueSizeTextField.fill = GridBagConstraints.VERTICAL;
-		gbc_maxQueSizeTextField.gridx = 2;
-		gbc_maxQueSizeTextField.gridy = 10;
-		mainPane.add(maxQueSizeTextField, gbc_maxQueSizeTextField);
-		maxQueSizeTextField.setColumns(10);
-		
-		labelDailyBookingMean = new JLabel("Daily Booking Mean");
-		GridBagConstraints gbc_labelDailyBookingMean = new GridBagConstraints();
-		gbc_labelDailyBookingMean.anchor = GridBagConstraints.EAST;
-		gbc_labelDailyBookingMean.insets = new Insets(0, 0, 5, 5);
-		gbc_labelDailyBookingMean.gridx = 1;
-		gbc_labelDailyBookingMean.gridy = 11;
-		mainPane.add(labelDailyBookingMean, gbc_labelDailyBookingMean);
-		
-		dailyBookingMeanTextField = new JTextField();
-		GridBagConstraints gbc_dailyBookingMeanTextField = new GridBagConstraints();
-		gbc_dailyBookingMeanTextField.anchor = GridBagConstraints.WEST;
-		gbc_dailyBookingMeanTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_dailyBookingMeanTextField.gridx = 2;
-		gbc_dailyBookingMeanTextField.gridy = 11;
-		mainPane.add(dailyBookingMeanTextField, gbc_dailyBookingMeanTextField);
-		dailyBookingMeanTextField.setColumns(10);
-		
-		labelMinimumBookings = new JLabel("Minimum Bookings");
-		GridBagConstraints gbc_labelMinimumBookings = new GridBagConstraints();
-		gbc_labelMinimumBookings.anchor = GridBagConstraints.EAST;
-		gbc_labelMinimumBookings.insets = new Insets(0, 0, 5, 5);
-		gbc_labelMinimumBookings.gridx = 1;
-		gbc_labelMinimumBookings.gridy = 12;
-		mainPane.add(labelMinimumBookings, gbc_labelMinimumBookings);
-		
-		minBookingsTextField = new JTextField();
-		GridBagConstraints gbc_minBookingsTextField = new GridBagConstraints();
-		gbc_minBookingsTextField.anchor = GridBagConstraints.WEST;
-		gbc_minBookingsTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_minBookingsTextField.gridx = 2;
-		gbc_minBookingsTextField.gridy = 12;
-		mainPane.add(minBookingsTextField, gbc_minBookingsTextField);
-		minBookingsTextField.setColumns(10);
-		
-		labelBookingStandardDevation = new JLabel("Booking Standard Devation");
-		GridBagConstraints gbc_labelBookingStandardDevation = new GridBagConstraints();
-		gbc_labelBookingStandardDevation.anchor = GridBagConstraints.EAST;
-		gbc_labelBookingStandardDevation.insets = new Insets(0, 0, 5, 5);
-		gbc_labelBookingStandardDevation.gridx = 1;
-		gbc_labelBookingStandardDevation.gridy = 13;
-		mainPane.add(labelBookingStandardDevation, gbc_labelBookingStandardDevation);
-		
-		bookingStanDevTextField = new JTextField();
-		GridBagConstraints gbc_bookingStanDevTextField = new GridBagConstraints();
-		gbc_bookingStanDevTextField.anchor = GridBagConstraints.WEST;
-		gbc_bookingStanDevTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_bookingStanDevTextField.gridx = 2;
-		gbc_bookingStanDevTextField.gridy = 13;
-		mainPane.add(bookingStanDevTextField, gbc_bookingStanDevTextField);
-		bookingStanDevTextField.setColumns(10);
 		
 		btnStart = new JButton("Start");
 		btnStart.setFont(new Font("Tempus Sans ITC", Font.BOLD, 16));
