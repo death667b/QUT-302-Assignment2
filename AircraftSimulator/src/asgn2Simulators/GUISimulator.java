@@ -67,7 +67,7 @@ public class GUISimulator extends JFrame implements Runnable {
 		super(arg0);
 		drawGUIWindow();
 		
-		startButton.addMouseListener(new ButtonListener());
+		//startButton.addMouseListener(new ButtonListener());
 	}
 
 
@@ -98,6 +98,36 @@ public class GUISimulator extends JFrame implements Runnable {
 			economyClTextField.setText("" + Constants.DEFAULT_ECONOMY_PROB);
 			canellationTextField.setText("" + Constants.DEFAULT_CANCELLATION_PROB);
 		}
+	}
+	
+	public void setDefaultsValues(String[] args){
+		seedTextField.setText("" + args[0]);
+		maxQueSizeTextField.setText("" + args[1]);
+		dailyBookingMeanTextField.setText("" + args[2]);
+		minBookingsTextField.setText("" + Constants.MINIMUM_BOOKINGS);
+		bookingStanDevTextField.setText("" + args[3]);
+		firstClTextField.setText("" + args[4]);
+		businessClTextField.setText("" + args[5]);
+		premiumClTextField.setText("" + args[6]);
+		economyClTextField.setText("" + args[7]);
+		canellationTextField.setText("" + args[8]);
+	}
+	
+	public String[] getStartingValues(){
+		String[] args = new String[10];
+		
+		args[0] = seedTextField.getText();
+		args[1] = maxQueSizeTextField.getText();
+		args[2] = dailyBookingMeanTextField.getText();
+		args[3] = bookingStanDevTextField.getText();
+		args[4] = firstClTextField.getText();
+		args[5] = businessClTextField.getText();
+		args[6] = premiumClTextField.getText();
+		args[7] = economyClTextField.getText();
+		args[8] = canellationTextField.getText();
+		args[9] = "1";
+		
+		return args;
 	}
 		
 	public void drawGUIWindow() {

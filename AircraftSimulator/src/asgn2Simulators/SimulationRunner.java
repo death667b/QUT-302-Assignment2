@@ -7,11 +7,15 @@
 package asgn2Simulators;
 
 import java.awt.EventQueue;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 
+import javax.swing.JButton;
 
 import asgn2Aircraft.AircraftException;
 import asgn2Passengers.PassengerException;
+import asgn2Simulators.GUISimulator.ButtonListener;
 
 /**
  * Class to operate the simulation, taking parameters and utility methods from the Simulator
@@ -28,23 +32,50 @@ public class SimulationRunner {
 	 * see {@link asgn2Simulators.SimulationRunner#printErrorAndExit()}
 	 */
 	public static void main(String[] args) {
-		final int NUM_ARGS = 9; 
+		
+		if (args.length == 0 || args.length == 10) {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						GUISimulator simGUI = new GUISimulator("Aircraft booking simulator");
+	
+						if (args.length == 0) { 
+							simGUI.displayDefaultsValues(true);
+						} else if (args.length == 10){
+							simGUI.setDefaultsValues(args);
+						}
+						
+						JButton startButton = simGUI.getStartButton();
+						startButton.addMouseListener(new MouseListener() {
+							@Override
+							public void mouseClicked(MouseEvent e) {
+								startSim(simGUI.getStartingValues());
+							}
+	
+							@Override
+							public void mousePressed(MouseEvent e) { }
+	
+							@Override
+							public void mouseReleased(MouseEvent e) { }
+	
+							@Override
+							public void mouseEntered(MouseEvent e) { }
+	
+							@Override
+							public void mouseExited(MouseEvent e) { }
+						});
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		}
+	}
+	
+	private static void startSim(String[] args){
+		final int NUM_ARGS = 10; 
 		Simulator s = null; 
 		Log l = null; 
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GUISimulator simGUI = new GUISimulator("Aircraft booking simulator");
-
-					simGUI.displayDefaultsValues(true);
-					
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 		
 		try {
 			switch (args.length) {
@@ -67,21 +98,15 @@ public class SimulationRunner {
 			System.exit(-1);
 		}
 	
-
-		
 		//Run the simulation 
 		SimulationRunner sr = new SimulationRunner(s,l);
-		
-		
-		/*
 		try {
 			sr.runSimulation();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
-		} */
+		} 
 	}
-	
 
 	
 	/**
