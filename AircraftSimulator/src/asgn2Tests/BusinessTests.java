@@ -5,7 +5,6 @@ package asgn2Tests;
 
 import static org.junit.Assert.*;
 
-import asgn2Aircraft.A380;
 import asgn2Passengers.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,42 +15,14 @@ import org.junit.Test;
  */
 public class BusinessTests {
 
-	private A380 aircraftA380, aircraftA380Full, aircraftA380Partial, aircraftErrors;
-	private First partialFirst, fullFirst;
-	private Business bizPassenger, partialBusiness, fullBusiness;
-	private Premium partialPremium, fullPremium;
-	private Economy partialEconomy, fullEconomy;
+	private Business passenger;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		// Create an Aircraft and a single unassigned Passenger.
-		aircraftA380 = new A380("EmptyFlightCode", 123);
-		bizPassenger = new Business(50, 123);
-
-		// Create an Aircraft with a capacity of 2 seats in each class. Create and assign a single Passenger for each class. This Aircraft is partially full.
-		aircraftA380Partial = new A380("PartialFlightCode", 1, 2, 2, 2, 2);
-		partialFirst = new First(1, 1);
-		aircraftA380Partial.confirmBooking(partialFirst, 1);
-		partialBusiness = new Business(1, 1);
-		aircraftA380Partial.confirmBooking(partialBusiness, 1);
-		partialPremium = new Premium(1, 1);
-		aircraftA380Partial.confirmBooking(partialPremium, 1);
-		partialEconomy = new Economy(1, 1);
-		aircraftA380Partial.confirmBooking(partialEconomy, 1);
-
-		// Create an Aircraft with a capacity of 1 seat in each class. Create and assign a Passenger for each of those seats. This Aircraft is full.
-		aircraftA380Full = new A380("FullFlightCode", 1, 1, 1, 1, 1);
-		fullFirst = new First(1, 1);
-		aircraftA380Full.confirmBooking(fullFirst, 1);
-		fullBusiness = new Business(1, 1);
-		aircraftA380Full.confirmBooking(fullBusiness, 1);
-		fullPremium = new Premium(1, 1);
-		aircraftA380Full.confirmBooking(fullPremium, 1);
-		fullEconomy = new Economy(1, 1);
-		aircraftA380Full.confirmBooking(fullEconomy, 1);
+		passenger = new Business(1, 1);
 	}
 
 	/**
@@ -59,53 +30,39 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testNoSeatsMsg() throws PassengerException {
-		assertEquals("No seats available in Business", partialBusiness.noSeatsMsg());
+		assertEquals("No seats available in Business", passenger.noSeatsMsg());
 	}
 
 	/**
 	 * Test method for {@link asgn2Passengers.Business#upgrade()}.
 	 */
 	@Test
-	public void testUpgradePass() {
-		partialBusiness.upgrade();
-		assertEquals("", partialBusiness.getPassID());
-	}
-
-	@Test
-	public void testUpgradeFail() {
-		partialBusiness.upgrade();
+	public void testUpgrade() {
+		Passenger newPassenger = passenger.upgrade();
+		assertTrue(newPassenger instanceof First);
 	}
 
 	/**
 	 * Test method for {@link asgn2Passengers.Business#Business(int, int)}.
 	 */
 	@Test
-	public void testBusinessIntInt() {
-		fail("Not yet implemented"); // TODO
+	public void testBusiness_NotNull() {
+		assertNotNull(passenger);
 	}
 
-	/**
-	 * Test method for {@link asgn2Passengers.Business#Business()}.
-	 */
-	@Test
-	public void testBusiness() {
-		fail("Not yet implemented"); // TODO
+	@Test(expected = PassengerException.class)
+	public void testBusiness_InvalidBookingTime() throws PassengerException {
+		Business passenger = new Business(-1, 1);
 	}
 
-	/**
-	 * Test method for {@link asgn2Passengers.Passenger#Passenger(int, int)}.
-	 */
-	@Test
-	public void testPassengerIntInt() {
-		fail("Not yet implemented"); // TODO
+	@Test(expected = PassengerException.class)
+	public void testBusiness_InvalidDepartureTime() throws PassengerException {
+		Business passenger = new Business(1, -1);
 	}
 
-	/**
-	 * Test method for {@link asgn2Passengers.Passenger#Passenger()}.
-	 */
-	@Test
-	public void testPassenger() {
-		fail("Not yet implemented"); // TODO
+	@Test(expected = PassengerException.class)
+	public void testBusiness_DepartureLessThenBooking() throws PassengerException {
+		Business passenger = new Business(2, 1);
 	}
 
 	/**
