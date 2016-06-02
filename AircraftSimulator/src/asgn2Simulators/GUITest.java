@@ -21,6 +21,12 @@ import java.awt.Font;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.JTextArea;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 public class GUITest extends JFrame {
 
@@ -50,6 +56,13 @@ public class GUITest extends JFrame {
 	private JPanel settingsPanel;
 	private JLabel labelSettingsPanelTitle;
 	private JTextArea textArea;
+	private JPanel radioPanel;
+	private JRadioButton radioDisplayText;
+	private JRadioButton radioDisplayGraph;
+	private final ButtonGroup textOrGraphGroup = new ButtonGroup();
+	private JButton showSummaryButton;
+	private JPanel panel;
+	private final Action action = new SwingAction();
 
 	/**
 	 * Launch the application.
@@ -78,9 +91,9 @@ public class GUITest extends JFrame {
 		setContentPane(mainPane);
 		GridBagLayout gbl_mainPane = new GridBagLayout();
 		gbl_mainPane.columnWidths = new int[] {30, 180, 110, 30, 180, 110, 30};
-		gbl_mainPane.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 10};
+		gbl_mainPane.rowHeights = new int[] {30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30};
 		gbl_mainPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		gbl_mainPane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_mainPane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		mainPane.setLayout(gbl_mainPane);
 		
 		textAndGraphPanel = new JPanel();
@@ -324,15 +337,57 @@ public class GUITest extends JFrame {
 		probabilityPanel.add(canellationTextField, gbc_canellationTextField);
 		canellationTextField.setColumns(10);
 		
+		panel = new JPanel();
+		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.gridwidth = 2;
+		gbc_panel.insets = new Insets(0, 0, 0, 5);
+		gbc_panel.fill = GridBagConstraints.BOTH;
+		gbc_panel.gridx = 1;
+		gbc_panel.gridy = 14;
+		mainPane.add(panel, gbc_panel);
+		
 		startButton = new JButton("Start Sim");
+		startButton.setHorizontalAlignment(SwingConstants.LEFT);
+		panel.add(startButton);
 		startButton.setFont(new Font("Tempus Sans ITC", Font.BOLD, 16));
 		startButton.setForeground(Color.BLACK);
 		startButton.setBackground(Color.GREEN);
-		GridBagConstraints gbc_startButton = new GridBagConstraints();
-		gbc_startButton.insets = new Insets(0, 0, 0, 5);
-		gbc_startButton.gridx = 1;
-		gbc_startButton.gridy = 14;
-		mainPane.add(startButton, gbc_startButton);
+		
+		showSummaryButton = new JButton("Show Summary");
+		showSummaryButton.setHorizontalAlignment(SwingConstants.RIGHT);
+		panel.add(showSummaryButton);
+		showSummaryButton.setFont(new Font("Tempus Sans ITC", Font.BOLD, 16));
+		
+		radioPanel = new JPanel();
+		FlowLayout fl_radioPanel = (FlowLayout) radioPanel.getLayout();
+		fl_radioPanel.setAlignment(FlowLayout.LEFT);
+		fl_radioPanel.setVgap(2);
+		fl_radioPanel.setHgap(2);
+		GridBagConstraints gbc_radioPanel = new GridBagConstraints();
+		gbc_radioPanel.anchor = GridBagConstraints.LINE_START;
+		gbc_radioPanel.gridx = 4;
+		gbc_radioPanel.gridy = 14;
+		mainPane.add(radioPanel, gbc_radioPanel);
+		
+		radioDisplayText = new JRadioButton("Text Report");
+		radioDisplayText.setAction(action);
+		textOrGraphGroup.add(radioDisplayText);
+		radioDisplayText.setSelected(true);
+		radioDisplayText.setVerticalAlignment(SwingConstants.BOTTOM);
+		radioPanel.add(radioDisplayText);
+		
+		radioDisplayGraph = new JRadioButton("Graph");
+		textOrGraphGroup.add(radioDisplayGraph);
+		radioDisplayGraph.setVerticalAlignment(SwingConstants.BOTTOM);
+		radioPanel.add(radioDisplayGraph);
 	}
 
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "SwingAction");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+		}
+	}
 }
