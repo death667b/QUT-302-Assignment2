@@ -228,16 +228,19 @@ public class BusinessTests {
 	 * Test method for {@link asgn2Passengers.Passenger#isConfirmed()}.
 	 */
 	@Test
-	public void testIsConfirmed() {
-		assertNotNull(passenger.isConfirmed());
+	public void testIsConfirmed() throws PassengerException {
+		passenger.confirmSeat(1, 1);
+		assertTrue(passenger.isConfirmed());
 	}
 
 	/**
 	 * Test method for {@link asgn2Passengers.Passenger#isFlown()}.
 	 */
 	@Test
-	public void testIsFlown() {
-		assertNotNull(passenger.isFlown());
+	public void testIsFlown() throws PassengerException {
+		passenger.confirmSeat(1, 1);
+		passenger.flyPassenger(1);
+		assertTrue(passenger.isFlown());
 	}
 
 	/**
@@ -245,39 +248,105 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testIsNew() {
-		assertNotNull(passenger.isNew());
+		assertTrue(passenger.isNew());
 	}
 
 	/**
 	 * Test method for {@link asgn2Passengers.Passenger#isQueued()}.
 	 */
 	@Test
-	public void testIsQueued() {
-		assertNotNull(passenger.isQueued());
+	public void testIsQueued() throws PassengerException {
+		passenger.queuePassenger(1, 1);
+		assertTrue(passenger.isQueued());
 	}
 
 	/**
 	 * Test method for {@link asgn2Passengers.Passenger#isRefused()}.
 	 */
 	@Test
-	public void testIsRefused() {
-		assertNotNull(passenger.isRefused());
+	public void testIsRefused() throws PassengerException {
+		passenger.refusePassenger(1);
+		assertTrue(passenger.isRefused());
 	}
 
 	/**
 	 * Test method for {@link asgn2Passengers.Passenger#queuePassenger(int, int)}.
 	 */
 	@Test
-	public void testQueuePassenger() {
-		fail("Not yet implemented"); // TODO
+	public void testQueuePassenger() throws PassengerException {
+		passenger.queuePassenger(1, 1);
+		assertTrue(passenger.isQueued());
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testQueuePassenger_isQueued() throws PassengerException {
+		passenger.queuePassenger(1, 1);
+		passenger.queuePassenger(1, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testQueuePassenger_isConfirmed() throws PassengerException {
+		passenger.confirmSeat(1, 1);
+		passenger.queuePassenger(1, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testQueuePassenger_isRefused() throws PassengerException {
+		passenger.refusePassenger(1);
+		passenger.queuePassenger(1, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testQueuePassenger_isFlown() throws PassengerException {
+		passenger.flyPassenger(1);
+		passenger.queuePassenger(1, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testQueuePassenger_DepartLessThanQueue() throws PassengerException {
+		passenger.queuePassenger(2, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testQueuePassenger_QueueLessThanZero() throws PassengerException {
+		passenger.queuePassenger(-1, 1);
 	}
 
 	/**
 	 * Test method for {@link asgn2Passengers.Passenger#refusePassenger(int)}.
 	 */
 	@Test
-	public void testRefusePassenger() {
-		fail("Not yet implemented"); // TODO
+	public void testRefusePassenger() throws PassengerException {
+		passenger.refusePassenger(1);
+		assertTrue(passenger.isRefused());
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testRefusePassenger_isConfirmed() throws PassengerException {
+		passenger.confirmSeat(1, 1);
+		passenger.refusePassenger(1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testRefusePassenger_isRefused() throws PassengerException {
+		passenger.refusePassenger(1);
+		passenger.refusePassenger(1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testRefusePassenger_isFlown() throws PassengerException {
+		passenger.flyPassenger(1);
+		passenger.refusePassenger(1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testRefusePassenger_RefusalLessThanBooking() throws PassengerException {
+		passenger.refusePassenger(0);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testRefusePassenger_RefusalLessThanZero() throws PassengerException {
+		passenger.refusePassenger(-1);
 	}
 
 	/**
@@ -285,31 +354,36 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testToString() {
-		fail("Not yet implemented"); // TODO
+		assertEquals("passID: J:0\nBT: 1\nNotQ", passenger.toString());
 	}
 
 	/**
 	 * Test method for {@link asgn2Passengers.Passenger#wasConfirmed()}.
 	 */
 	@Test
-	public void testWasConfirmed() {
-		fail("Not yet implemented"); // TODO
+	public void testWasConfirmed_True() throws PassengerException {
+		passenger.confirmSeat(1, 1);
+		assertTrue(passenger.wasConfirmed());
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testWasConfirmed_False() throws PassengerException {
+		passenger.confirmSeat(-1, 1);
+		assertFalse(passenger.wasConfirmed());
 	}
 
 	/**
 	 * Test method for {@link asgn2Passengers.Passenger#wasQueued()}.
 	 */
 	@Test
-	public void testWasQueued() {
-		fail("Not yet implemented"); // TODO
+	public void testWasQueued_True() throws PassengerException {
+		passenger.queuePassenger(1, 1);
+		assertTrue(passenger.wasQueued());
 	}
 
-	/**
-	 * Test method for {@link asgn2Passengers.Passenger#copyPassengerState(asgn2Passengers.Passenger)}.
-	 */
-	@Test
-	public void testCopyPassengerState() {
-		fail("Not yet implemented"); // TODO
+	@Test(expected = PassengerException.class)
+	public void testWasQueue_False() throws PassengerException {
+		passenger.queuePassenger(-1, 1);
+		assertFalse(passenger.wasQueued());
 	}
-
 }
