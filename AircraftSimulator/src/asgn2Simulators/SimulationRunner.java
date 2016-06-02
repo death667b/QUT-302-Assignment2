@@ -9,27 +9,19 @@ package asgn2Simulators;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.plot.XYPlot;
+
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.date.SerialDate;
 
 import asgn2Aircraft.AircraftException;
 import asgn2Passengers.PassengerException;
@@ -43,11 +35,16 @@ import asgn2Passengers.PassengerException;
  */ 
 public class SimulationRunner {
 	TimeSeriesCollection tsc = new TimeSeriesCollection(); 
+	TimeSeriesCollection tscTotals = new TimeSeriesCollection(); 
 	TimeSeries bookTotal = new TimeSeries("Total Bookings");
 	TimeSeries econTotal = new TimeSeries("Economy"); 
 	TimeSeries busTotal = new TimeSeries("Business");
 	TimeSeries premTotal = new TimeSeries("Premium");
 	TimeSeries firstTotal = new TimeSeries("First");
+	TimeSeries queueTotal = new TimeSeries("In Queue Each Day");
+	TimeSeries refusedTotal = new TimeSeries("Refused Each Day");
+	
+	int queueTally, todayRefused, yesterdayRefused;
 	
 	/**
 	 * Main program for the simulation 
@@ -56,7 +53,7 @@ public class SimulationRunner {
 	 * see {@link asgn2Simulators.SimulationRunner#printErrorAndExit()}
 	 */
 	public static void main(String[] args) {
-		
+
 		if (args.length == 0 || args.length == 10) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
@@ -66,7 +63,7 @@ public class SimulationRunner {
 						if (args.length == 0) { 
 							simGUI.displayDefaultsValues();
 						} else if (args.length == 10){
-							simGUI.setDefaultsValues(args);
+							simGUI.setValuesFromCMD(args);
 						}
 						
 						JButton startButton = simGUI.getStartButton();
@@ -209,7 +206,7 @@ public class SimulationRunner {
 
 	 */
 	public void runSimulation(GUISimulator simGUI) throws AircraftException, PassengerException, SimulationException, IOException {
-		
+		yesterdayRefused = 0;
 		simGUI.clearTextScrollPanel();
 		this.sim.createSchedule();
 		this.log.initialEntry(this.sim);
@@ -237,14 +234,15 @@ public class SimulationRunner {
 			
 			boolean flying = (time >= Constants.FIRST_FLIGHT);
 			buildTimeSeries(time, sim.getSummary(time, flying), flying);
-			
+			buildSummaryTotals(time, sim.getSummary(time, flying), flying);
 		}
 		this.sim.finaliseQueuedAndCancelledPassengers(Constants.DURATION); 
 		this.log.logQREntries(Constants.DURATION, sim);
 		this.log.finalise(this.sim);
 		displayFinalLog(simGUI);
 		
-		simGUI.setDataSet(sendTimeSeriesData());
+		simGUI.setDataSet(sendDailyTimeSeriesData());
+		simGUI.setSummary(sendDailyTotalsSeriesData());
 	}
 	
 	private void displayInitialEnttry(GUISimulator simGUI) throws SimulationException{
@@ -269,6 +267,29 @@ public class SimulationRunner {
 		setText += sim.finalState();
 		
 		simGUI.textScrollPanel(true, setText);
+	}
+	
+	private void buildSummaryTotals(int time, String string, boolean flying){
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.set(2016,0,time,6,0);
+		Date timePoint = cal.getTime();
+		
+		
+		String[] splitData = string.split(":");
+		
+		if (flying) {
+			queueTally = Integer.parseInt(splitData[8].substring(1));
+			todayRefused = Integer.parseInt(splitData[9].substring(1).replace("\n", ""));
+		} else {
+			queueTally = Integer.parseInt(splitData[2].substring(1));
+			todayRefused = Integer.parseInt(splitData[3].substring(1).replace("\n", ""));
+		}
+		
+		int dailyRefused = todayRefused - yesterdayRefused;
+		yesterdayRefused = todayRefused;
+		
+		queueTotal.add(new Day(timePoint),queueTally);
+		refusedTotal.add(new Day(timePoint),dailyRefused);
 	}
 	
 	private void buildTimeSeries(int time, String string, boolean flying) {	
@@ -300,13 +321,19 @@ public class SimulationRunner {
 		bookTotal.add(new Day(timePoint),dailyBookingTotal);
 	}
     
-	private TimeSeriesCollection sendTimeSeriesData() {
+	private TimeSeriesCollection sendDailyTimeSeriesData() {
 		tsc.addSeries(firstTotal);
 		tsc.addSeries(busTotal);
 		tsc.addSeries(premTotal);
 		tsc.addSeries(econTotal);
 		tsc.addSeries(bookTotal);
 		return tsc; 
+	}
+	
+	private TimeSeriesCollection sendDailyTotalsSeriesData() {
+		tscTotals.addSeries(queueTotal);
+		tscTotals.addSeries(refusedTotal);
+		return tscTotals; 
 	}
 }
 

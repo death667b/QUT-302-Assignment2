@@ -114,7 +114,13 @@ public class GUISimulator extends JFrame implements Runnable {
 		chart = createChart(dataset);
 		graphPanel.add(new ChartPanel(chart), BorderLayout.CENTER);
 		graphPanel.revalidate();
-		
+	}
+	
+	public void setSummary(TimeSeriesCollection dataset){
+		summaryPanel.removeAll();
+		chart = createChart(dataset);
+		summaryPanel.add(new ChartPanel(chart), BorderLayout.CENTER);
+		summaryPanel.revalidate();
 	}
 	
 	public JButton getStartButton(){
@@ -146,7 +152,7 @@ public class GUISimulator extends JFrame implements Runnable {
 		canellationTextField.setText("" + Constants.DEFAULT_CANCELLATION_PROB);
 	}
 	
-	public void setDefaultsValues(String[] args){
+	public void setValuesFromCMD(String[] args){
 		seedTextField.setText("" + args[0]);
 		maxQueSizeTextField.setText("" + args[1]);
 		dailyBookingMeanTextField.setText("" + args[2]);
