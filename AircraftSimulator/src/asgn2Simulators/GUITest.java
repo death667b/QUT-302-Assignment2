@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.JTextArea;
 
 public class GUITest extends JFrame {
 
@@ -48,6 +49,7 @@ public class GUITest extends JFrame {
 	private JLabel labelProbabilityPanelTitle;
 	private JPanel settingsPanel;
 	private JLabel labelSettingsPanelTitle;
+	private JTextArea textArea;
 
 	/**
 	 * Launch the application.
@@ -91,6 +93,11 @@ public class GUITest extends JFrame {
 		gbc_textAndGraphPanel.gridx = 0;
 		gbc_textAndGraphPanel.gridy = 0;
 		mainPane.add(textAndGraphPanel, gbc_textAndGraphPanel);
+		
+		textArea = new JTextArea();
+		textArea.setColumns(50);
+		textArea.setRows(10);
+		textAndGraphPanel.add(textArea);
 		
 		settingsPanel = new JPanel();
 		settingsPanel.setBackground(Color.WHITE);
