@@ -10,12 +10,7 @@ package asgn2Aircraft;
 import java.util.ArrayList;
 import java.util.List;
 
-import asgn2Passengers.Business;
-import asgn2Passengers.Economy;
-import asgn2Passengers.First;
-import asgn2Passengers.Passenger;
-import asgn2Passengers.PassengerException;
-import asgn2Passengers.Premium;
+import asgn2Passengers.*;
 import asgn2Simulators.Log;
 
 /**
@@ -103,10 +98,8 @@ public abstract class Aircraft {
 	 * @throws AircraftException if <code>Passenger</code> is not recorded in aircraft seating 
 	 */
 	public void cancelBooking(Passenger p,int cancellationTime) throws PassengerException, AircraftException {
-		if (!p.isConfirmed()) throw new PassengerException("Passenger needs to be confirmed on the plane before it can be cancelled.");
-		if (cancellationTime < 0) throw new PassengerException("Cancellation time can not be less than zero.");
 		if (!hasPassenger(p)) throw new AircraftException("Passenger needs to exist on the plane before it can be cancelled.");
-		
+
 		p.cancelSeat(cancellationTime);
 		this.status += Log.setPassengerMsg(p,"C","N");
 		changeAircraftSeatingCount(p, false);
@@ -123,21 +116,13 @@ public abstract class Aircraft {
 	 * OR confirmationTime OR departureTime is invalid. See {@link asgn2Passengers.Passenger#confirmSeat(int, int)}
 	 * @throws AircraftException if no seats available in <code>Passenger</code> fare class. 
 	 */
-	public void confirmBooking(Passenger p,int confirmationTime) throws AircraftException, PassengerException { 		
-		if (this.departureTime <= 0) throw new PassengerException("Departure time needs to be greater than zero.");
-		if (confirmationTime < 0) throw new PassengerException("Confirmation time needs to be equal to or greater than zero.");
+	public void confirmBooking(Passenger p,int confirmationTime) throws AircraftException, PassengerException {
 		if (!seatsAvailable(p)) throw new AircraftException(noSeatsAvailableMsg(p));
-		if (p.isNew() || p.isQueued()) {
-			
-			p.confirmSeat(confirmationTime, this.departureTime);
-			changeAircraftSeatingCount(p, true);
-			this.seats.add(p);
-			String currentState = p.isNew() ? "N" : "Q";
-			this.status += Log.setPassengerMsg(p,currentState,"C");
-			
-		} else {
-			throw new PassengerException("Passenger is in the incorrect state. It needs to be either New or Queued.");
-		}
+		p.confirmSeat(confirmationTime, this.departureTime);
+		changeAircraftSeatingCount(p, true);
+		this.seats.add(p);
+		String currentState = p.isNew() ? "N" : "Q";
+		this.status += Log.setPassengerMsg(p,currentState,"C");
 	}
 	
 	/**
@@ -184,7 +169,6 @@ public abstract class Aircraft {
 	 */
 	public void flyPassengers(int departureTime) throws PassengerException { 
 		for(Passenger p : this.seats){
-			if (!p.isConfirmed()) throw new PassengerException("Passenger is in the incorrect state. Must be confirmed before the passenger can fly.");
 			p.flyPassenger(departureTime);
 			this.status += Log.setPassengerMsg(p,"C","F");
 		}
