@@ -14,9 +14,22 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.date.SerialDate;
 
 import asgn2Aircraft.AircraftException;
 import asgn2Passengers.PassengerException;
@@ -29,6 +42,13 @@ import asgn2Passengers.PassengerException;
  *
  */ 
 public class SimulationRunner {
+	TimeSeriesCollection tsc = new TimeSeriesCollection(); 
+	TimeSeries bookTotal = new TimeSeries("Total Bookings");
+	TimeSeries econTotal = new TimeSeries("Economy"); 
+	TimeSeries busTotal = new TimeSeries("Business");
+	TimeSeries premTotal = new TimeSeries("Premium");
+	TimeSeries firstTotal = new TimeSeries("First");
+	
 	/**
 	 * Main program for the simulation 
 	 * 
@@ -214,11 +234,17 @@ public class SimulationRunner {
 			this.log.logQREntries(time, sim);
 			this.log.logEntry(time,this.sim);
 			displayDailyLogs(simGUI, time);
+			
+			boolean flying = (time >= Constants.FIRST_FLIGHT);
+			buildTimeSeries(time, sim.getSummary(time, flying), flying);
+			
 		}
 		this.sim.finaliseQueuedAndCancelledPassengers(Constants.DURATION); 
 		this.log.logQREntries(Constants.DURATION, sim);
 		this.log.finalise(this.sim);
 		displayFinalLog(simGUI);
+		
+		simGUI.setDataSet(sendTimeSeriesData());
 	}
 	
 	private void displayInitialEnttry(GUISimulator simGUI) throws SimulationException{
@@ -245,6 +271,43 @@ public class SimulationRunner {
 		simGUI.textScrollPanel(true, setText);
 	}
 	
+	private void buildTimeSeries(int time, String string, boolean flying) {	
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.set(2016,0,time,6,0);
+		Date timePoint = cal.getTime();
+		
+		int dailyFirst = 0;
+		int dailyPremium = 0;
+		int dailyBusiness = 0;
+		int dailyEconomy = 0;
+		int dailyBookingTotal = 0;
+		
+		String[] splitData = string.split(":");
+		if (flying){
+			dailyBookingTotal = Integer.parseInt(splitData[6].substring(1));
+			dailyEconomy = Integer.parseInt(splitData[5].substring(1));
+			dailyBusiness = Integer.parseInt(splitData[3].substring(1));
+			dailyPremium = Integer.parseInt(splitData[4].substring(1));
+			dailyFirst = Integer.parseInt(splitData[2].substring(1));
+		} else {
+			
+		}
+		
+		premTotal.add(new Day(timePoint),dailyPremium);
+		firstTotal.add(new Day(timePoint),dailyFirst);
+        busTotal.add(new Day(timePoint),dailyBusiness);
+		econTotal.add(new Day(timePoint),dailyEconomy);
+		bookTotal.add(new Day(timePoint),dailyBookingTotal);
+	}
+    
+	private TimeSeriesCollection sendTimeSeriesData() {
+		tsc.addSeries(firstTotal);
+		tsc.addSeries(busTotal);
+		tsc.addSeries(premTotal);
+		tsc.addSeries(econTotal);
+		tsc.addSeries(bookTotal);
+		return tsc; 
+	}
 }
 
 

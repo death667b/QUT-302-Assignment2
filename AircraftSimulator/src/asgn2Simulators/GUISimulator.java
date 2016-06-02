@@ -6,6 +6,7 @@
  */
 package asgn2Simulators;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -15,6 +16,10 @@ import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.Point;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Random;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -28,6 +33,16 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYDataset;
 
 
 /**
@@ -72,6 +87,7 @@ public class GUISimulator extends JFrame implements Runnable {
 	private JRadioButton radioDisplayText;
 	private JRadioButton radioDisplayGraph;
 	private final ButtonGroup textOrGraphGroup = new ButtonGroup();
+	private JFreeChart chart;
 	
 	/**
 	 * @param arg0
@@ -81,8 +97,7 @@ public class GUISimulator extends JFrame implements Runnable {
 		super(arg0);
 		drawGUIWindow();
 	}
-
-
+	
 	@Override
 	public void run() {
 	}
@@ -91,6 +106,15 @@ public class GUISimulator extends JFrame implements Runnable {
 	 */
 	public static void main(String[] args) {
 
+	}
+	
+	
+	public void setDataSet(TimeSeriesCollection dataset){
+		graphPanel.removeAll();
+		chart = createChart(dataset);
+		graphPanel.add(new ChartPanel(chart), BorderLayout.CENTER);
+		graphPanel.revalidate();
+		
 	}
 	
 	public JButton getStartButton(){
@@ -161,12 +185,25 @@ public class GUISimulator extends JFrame implements Runnable {
 	public void activateTextPanel(){
 		textPanel.setVisible(true);
 		graphPanel.setVisible(false);
+		summaryPanel.setVisible(false);
 	}
 	
 	public void activateGraphPanel(){
 		textPanel.setVisible(false);
 		graphPanel.setVisible(true);
+		summaryPanel.setVisible(false);
 	}
+	
+    private JFreeChart createChart(final XYDataset dataset) {
+        final JFreeChart result = ChartFactory.createTimeSeriesChart(
+            null, "Days", "Passengers", dataset, true, true, false);
+        final XYPlot plot = result.getXYPlot();
+        ValueAxis domain = plot.getDomainAxis();
+        domain.setAutoRange(true);
+        ValueAxis range = plot.getRangeAxis();
+        range.setAutoRange(true);
+        return result;
+    }
 	
 	public void textScrollPanel(boolean status, String text){
 		
@@ -182,8 +219,8 @@ public class GUISimulator extends JFrame implements Runnable {
 		
 	public void drawGUIWindow() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(700, 500));
-		setLocation(new Point(200, 200));
+		setPreferredSize(new Dimension(700, 685));
+		setLocation(new Point(400, 10));
 		pack();
 		setVisible(true);
 		mainPane = new JPanel();
@@ -196,15 +233,17 @@ public class GUISimulator extends JFrame implements Runnable {
 		gbl_mainPane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		mainPane.setLayout(gbl_mainPane);
 		
-		textPanel = new JPanel();
-		textPanel.setBackground(new Color(255, 255, 204));
 		GridBagConstraints gbc_textAndGraphPanel = new GridBagConstraints();
 		gbc_textAndGraphPanel.fill = GridBagConstraints.BOTH;
 		gbc_textAndGraphPanel.gridheight = 7;
 		gbc_textAndGraphPanel.gridwidth = 7;
-		gbc_textAndGraphPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_textAndGraphPanel.insets = new Insets(0, 0, 0, 0);
 		gbc_textAndGraphPanel.gridx = 0;
 		gbc_textAndGraphPanel.gridy = 0;
+		
+		
+		textPanel = new JPanel();
+		textPanel.setBackground(new Color(255, 255, 204));
 		mainPane.add(textPanel, gbc_textAndGraphPanel);
 		
 		summaryPanel = new JPanel();
@@ -216,15 +255,15 @@ public class GUISimulator extends JFrame implements Runnable {
 		graphPanel.setVisible(false);
 		graphPanel.setBackground(new Color(255, 255, 204));
 		mainPane.add(graphPanel, gbc_textAndGraphPanel);
-		
+			
 		reportText = new JTextArea();
 		reportText.setColumns(60);
-		reportText.setRows(14);
+		reportText.setRows(26);
 		reportText.setLineWrap(true);
 		logsScrollPane = new JScrollPane(reportText);
 		logsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		logsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		textPanel.add(logsScrollPane);
+		textPanel.add(logsScrollPane, BorderLayout.CENTER);
 		
 		settingsPanel = new JPanel();
 		settingsPanel.setBackground(Color.WHITE);
