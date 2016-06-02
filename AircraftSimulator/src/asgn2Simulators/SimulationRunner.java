@@ -7,6 +7,8 @@
 package asgn2Simulators;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
@@ -14,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.swing.JButton;
+import javax.swing.JRadioButton;
 
 import asgn2Aircraft.AircraftException;
 import asgn2Passengers.PassengerException;
@@ -41,30 +44,45 @@ public class SimulationRunner {
 						GUISimulator simGUI = new GUISimulator("Aircraft booking simulator");
 	
 						if (args.length == 0) { 
-							simGUI.displayDefaultsValues(true);
+							simGUI.displayDefaultsValues();
 						} else if (args.length == 10){
 							simGUI.setDefaultsValues(args);
 						}
 						
 						JButton startButton = simGUI.getStartButton();
-						startButton.addMouseListener(new MouseListener() {
+						JButton showSummaryButton = simGUI.getShowSummaryButton();
+						JRadioButton radioDisplayText = simGUI.getRadioDisplay();
+						JRadioButton radioDisplayGraph = simGUI.getRadioGraph();
+						
+						startButton.addActionListener(new ActionListener() {
 							@Override
-							public void mouseClicked(MouseEvent e) {
+							public void actionPerformed(ActionEvent e) {
 								startSim(simGUI.getStartingValues(), simGUI);
+								
 							}
-	
-							@Override
-							public void mousePressed(MouseEvent e) { }
-	
-							@Override
-							public void mouseReleased(MouseEvent e) { }
-	
-							@Override
-							public void mouseEntered(MouseEvent e) { }
-	
-							@Override
-							public void mouseExited(MouseEvent e) { }
 						});
+						
+						showSummaryButton.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								simGUI.activateSummaryScreen();
+							}
+						});
+						
+						radioDisplayText.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								simGUI.activateTextPanel();
+							}
+						});
+						
+						radioDisplayGraph.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								simGUI.activateGraphPanel();
+							}
+						});
+
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

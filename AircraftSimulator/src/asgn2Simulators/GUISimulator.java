@@ -8,6 +8,7 @@ package asgn2Simulators;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,14 +16,17 @@ import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.Point;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 
@@ -34,9 +38,13 @@ import javax.swing.border.LineBorder;
 public class GUISimulator extends JFrame implements Runnable {
 
 	private JPanel mainPane;
-	private JPanel textAndGraphPanel;
+	private JPanel textPanel;
+	private JPanel graphPanel;
+	private JPanel summaryPanel;
 	private JPanel probabilityPanel;
 	private JPanel settingsPanel;
+	private JPanel radioPanel;
+	private JPanel buttonPanel;
 	private JTextField maxQueSizeTextField;
 	private JTextField dailyBookingMeanTextField;
 	private JTextField minBookingsTextField;
@@ -60,6 +68,10 @@ public class GUISimulator extends JFrame implements Runnable {
 	private JLabel labelSettingsPanelTitle;
 	private JScrollPane logsScrollPane;
 	private JButton startButton;
+	private JButton showSummaryButton;
+	private JRadioButton radioDisplayText;
+	private JRadioButton radioDisplayGraph;
+	private final ButtonGroup textOrGraphGroup = new ButtonGroup();
 	
 	/**
 	 * @param arg0
@@ -85,19 +97,29 @@ public class GUISimulator extends JFrame implements Runnable {
 		return startButton;
 	}
 	
-	public void displayDefaultsValues(boolean display){
-		if (display){
-			seedTextField.setText("" + Constants.DEFAULT_SEED);
-			maxQueSizeTextField.setText("" + Constants.DEFAULT_MAX_QUEUE_SIZE);
-			dailyBookingMeanTextField.setText("" + Constants.DEFAULT_DAILY_BOOKING_MEAN);
-			minBookingsTextField.setText("" + Constants.MINIMUM_BOOKINGS);
-			bookingStanDevTextField.setText("" + Constants.DEFAULT_DAILY_BOOKING_SD);
-			firstClTextField.setText("" + Constants.DEFAULT_FIRST_PROB);
-			businessClTextField.setText("" + Constants.DEFAULT_BUSINESS_PROB);
-			premiumClTextField.setText("" + Constants.DEFAULT_PREMIUM_PROB);
-			economyClTextField.setText("" + Constants.DEFAULT_ECONOMY_PROB);
-			canellationTextField.setText("" + Constants.DEFAULT_CANCELLATION_PROB);
-		}
+	public JButton getShowSummaryButton(){
+		return showSummaryButton;
+	}
+	
+	public JRadioButton getRadioDisplay(){
+		return radioDisplayText;
+	}
+	
+	public JRadioButton getRadioGraph(){
+		return radioDisplayGraph;
+	}
+	
+	public void displayDefaultsValues(){
+		seedTextField.setText("" + Constants.DEFAULT_SEED);
+		maxQueSizeTextField.setText("" + Constants.DEFAULT_MAX_QUEUE_SIZE);
+		dailyBookingMeanTextField.setText("" + Constants.DEFAULT_DAILY_BOOKING_MEAN);
+		minBookingsTextField.setText("" + Constants.MINIMUM_BOOKINGS);
+		bookingStanDevTextField.setText("" + Constants.DEFAULT_DAILY_BOOKING_SD);
+		firstClTextField.setText("" + Constants.DEFAULT_FIRST_PROB);
+		businessClTextField.setText("" + Constants.DEFAULT_BUSINESS_PROB);
+		premiumClTextField.setText("" + Constants.DEFAULT_PREMIUM_PROB);
+		economyClTextField.setText("" + Constants.DEFAULT_ECONOMY_PROB);
+		canellationTextField.setText("" + Constants.DEFAULT_CANCELLATION_PROB);
 	}
 	
 	public void setDefaultsValues(String[] args){
@@ -130,10 +152,26 @@ public class GUISimulator extends JFrame implements Runnable {
 		return args;
 	}
 	
+	public void activateSummaryScreen(){
+		textPanel.setVisible(false);
+		graphPanel.setVisible(false);
+		summaryPanel.setVisible(true);
+	}
+	
+	public void activateTextPanel(){
+		textPanel.setVisible(true);
+		graphPanel.setVisible(false);
+	}
+	
+	public void activateGraphPanel(){
+		textPanel.setVisible(false);
+		graphPanel.setVisible(true);
+	}
+	
 	public void textScrollPanel(boolean status, String text){
 		
-		if (status) textAndGraphPanel.add(logsScrollPane);
-		else textAndGraphPanel.remove(logsScrollPane);
+		if (status) textPanel.add(logsScrollPane);
+		else textPanel.remove(logsScrollPane);
 		
 		reportText.setText(reportText.getText() + text);
 	}
@@ -158,8 +196,8 @@ public class GUISimulator extends JFrame implements Runnable {
 		gbl_mainPane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		mainPane.setLayout(gbl_mainPane);
 		
-		textAndGraphPanel = new JPanel();
-		textAndGraphPanel.setBackground(new Color(255, 255, 204));
+		textPanel = new JPanel();
+		textPanel.setBackground(new Color(255, 255, 204));
 		GridBagConstraints gbc_textAndGraphPanel = new GridBagConstraints();
 		gbc_textAndGraphPanel.fill = GridBagConstraints.BOTH;
 		gbc_textAndGraphPanel.gridheight = 7;
@@ -167,7 +205,17 @@ public class GUISimulator extends JFrame implements Runnable {
 		gbc_textAndGraphPanel.insets = new Insets(0, 0, 5, 0);
 		gbc_textAndGraphPanel.gridx = 0;
 		gbc_textAndGraphPanel.gridy = 0;
-		mainPane.add(textAndGraphPanel, gbc_textAndGraphPanel);
+		mainPane.add(textPanel, gbc_textAndGraphPanel);
+		
+		summaryPanel = new JPanel();
+		summaryPanel.setVisible(false);
+		summaryPanel.setBackground(new Color(255, 255, 204));
+		mainPane.add(summaryPanel, gbc_textAndGraphPanel);
+		
+		graphPanel = new JPanel();
+		graphPanel.setVisible(false);
+		graphPanel.setBackground(new Color(255, 255, 204));
+		mainPane.add(graphPanel, gbc_textAndGraphPanel);
 		
 		reportText = new JTextArea();
 		reportText.setColumns(60);
@@ -176,7 +224,7 @@ public class GUISimulator extends JFrame implements Runnable {
 		logsScrollPane = new JScrollPane(reportText);
 		logsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		logsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		textAndGraphPanel.add(logsScrollPane);
+		textPanel.add(logsScrollPane);
 		
 		settingsPanel = new JPanel();
 		settingsPanel.setBackground(Color.WHITE);
@@ -404,14 +452,47 @@ public class GUISimulator extends JFrame implements Runnable {
 		probabilityPanel.add(canellationTextField, gbc_canellationTextField);
 		canellationTextField.setColumns(10);
 		
+		buttonPanel = new JPanel();
+		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.gridwidth = 2;
+		gbc_panel.insets = new Insets(0, 0, 0, 5);
+		gbc_panel.fill = GridBagConstraints.BOTH;
+		gbc_panel.gridx = 1;
+		gbc_panel.gridy = 14;
+		mainPane.add(buttonPanel, gbc_panel);
+		
 		startButton = new JButton("Start Sim");
+		startButton.setHorizontalAlignment(SwingConstants.LEFT);
+		buttonPanel.add(startButton);
 		startButton.setFont(new Font("Tempus Sans ITC", Font.BOLD, 16));
 		startButton.setForeground(Color.BLACK);
 		startButton.setBackground(Color.GREEN);
-		GridBagConstraints gbc_startButton = new GridBagConstraints();
-		gbc_startButton.insets = new Insets(0, 0, 0, 5);
-		gbc_startButton.gridx = 1;
-		gbc_startButton.gridy = 14;
-		mainPane.add(startButton, gbc_startButton);
+		
+		showSummaryButton = new JButton("Show Summary");
+		showSummaryButton.setHorizontalAlignment(SwingConstants.RIGHT);
+		buttonPanel.add(showSummaryButton);
+		showSummaryButton.setFont(new Font("Tempus Sans ITC", Font.BOLD, 16));
+		
+		radioPanel = new JPanel();
+		FlowLayout fl_radioPanel = (FlowLayout) radioPanel.getLayout();
+		fl_radioPanel.setAlignment(FlowLayout.LEFT);
+		fl_radioPanel.setVgap(2);
+		fl_radioPanel.setHgap(2);
+		GridBagConstraints gbc_radioPanel = new GridBagConstraints();
+		gbc_radioPanel.anchor = GridBagConstraints.LINE_START;
+		gbc_radioPanel.gridx = 4;
+		gbc_radioPanel.gridy = 14;
+		mainPane.add(radioPanel, gbc_radioPanel);
+		
+		radioDisplayText = new JRadioButton("Text Report");
+		textOrGraphGroup.add(radioDisplayText);
+		radioDisplayText.setSelected(true);
+		radioDisplayText.setVerticalAlignment(SwingConstants.BOTTOM);
+		radioPanel.add(radioDisplayText);
+		
+		radioDisplayGraph = new JRadioButton("Graph");
+		textOrGraphGroup.add(radioDisplayGraph);
+		radioDisplayGraph.setVerticalAlignment(SwingConstants.BOTTOM);
+		radioPanel.add(radioDisplayGraph);
 	}
 }
