@@ -100,28 +100,80 @@ public class BusinessTests {
 
 	@Test(expected = PassengerException.class)
 	public void testCancelSeat_CancellationLessThanZero() throws PassengerException {
-
+		passenger.cancelSeat(-1);
 	}
 
 	@Test(expected = PassengerException.class)
 	public void testCancelSeat_DepartureLessThanCancellation() throws PassengerException {
-
+		passenger.cancelSeat(0);
 	}
 
 	/**
 	 * Test method for {@link asgn2Passengers.Passenger#confirmSeat(int, int)}.
 	 */
 	@Test
-	public void testConfirmSeat() {
-		fail("Not yet implemented"); // TODO
+	public void testConfirmSeat() throws PassengerException {
+		passenger.confirmSeat(1, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testConfirmSeat_isConfirmed() throws PassengerException {
+		passenger.confirmSeat(1, 1);
+		passenger.confirmSeat(1, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testConfirmSeat_isRefused() throws PassengerException {
+		passenger.refusePassenger(1);
+		passenger.confirmSeat(1, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testConfirmSeat_isFlown() throws PassengerException {
+		passenger.flyPassenger(1);
+		passenger.confirmSeat(1, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testConfirmSeat_ConfirmationLessThanZero() throws PassengerException {
+		passenger.confirmSeat(-1, 1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testConfirmSeat_DepartureLessThanConfirmation() throws PassengerException {
+		passenger.confirmSeat(2, 1);
 	}
 
 	/**
 	 * Test method for {@link asgn2Passengers.Passenger#flyPassenger(int)}.
 	 */
 	@Test
-	public void testFlyPassenger() {
-		fail("Not yet implemented"); // TODO
+	public void testFlyPassenger() throws PassengerException {
+		passenger.confirmSeat(1, 1);
+		passenger.flyPassenger(1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testFlyPassenger_isNew() throws PassengerException {
+		passenger.flyPassenger(1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testFlyPassenger_isRefused() throws PassengerException {
+		passenger.refusePassenger(1);
+		passenger.flyPassenger(1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testFlyPassenger_isFlown() throws PassengerException {
+		passenger.flyPassenger(1);
+		passenger.flyPassenger(1);
+	}
+
+	@Test(expected = PassengerException.class)
+	public void testFlyPassenger_DepartureLessThanZero() throws PassengerException {
+		passenger.confirmSeat(1, 1);
+		passenger.flyPassenger(-1);
 	}
 
 	/**
@@ -129,7 +181,7 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testGetBookingTime() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(passenger.getBookingTime());
 	}
 
 	/**
@@ -137,7 +189,7 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testGetConfirmationTime() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(passenger.getConfirmationTime());
 	}
 
 	/**
@@ -145,7 +197,7 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testGetDepartureTime() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(passenger.getDepartureTime());
 	}
 
 	/**
@@ -153,7 +205,7 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testGetEnterQueueTime() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(passenger.getEnterQueueTime());
 	}
 
 	/**
@@ -161,7 +213,7 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testGetExitQueueTime() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(passenger.getExitQueueTime());
 	}
 
 	/**
@@ -169,7 +221,7 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testGetPassID() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(passenger.getPassID());
 	}
 
 	/**
@@ -177,7 +229,7 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testIsConfirmed() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(passenger.isConfirmed());
 	}
 
 	/**
@@ -185,7 +237,7 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testIsFlown() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(passenger.isFlown());
 	}
 
 	/**
@@ -193,7 +245,7 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testIsNew() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(passenger.isNew());
 	}
 
 	/**
@@ -201,7 +253,7 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testIsQueued() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(passenger.isQueued());
 	}
 
 	/**
@@ -209,7 +261,7 @@ public class BusinessTests {
 	 */
 	@Test
 	public void testIsRefused() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(passenger.isRefused());
 	}
 
 	/**
